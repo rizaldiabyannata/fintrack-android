@@ -12,131 +12,60 @@
     app:strokeWidth="1dp">
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="12dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
 
-        <!-- Baris 1 -->
+        <!-- Baris Utama: Bulan, Pendapatan, Pengeluaran -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:orientation="horizontal">
 
-            <!-- Kiri: Hari dan Tanggal -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.6"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="bottom">
-
-                <!-- Nama Hari -->
-                <TextView
-                    android:id="@+id/txt_hari"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:text="Wed"
-                    android:textStyle="bold"
-                    android:textSize="24sp"
-                    android:layout_marginEnd="2dp"
-                    android:textColor="@color/black" />
-
-                <!-- Tanggal -->
-                <TextView
-                    android:id="@+id/txt_tanggalHarian"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="16/05/25"
-                    android:textSize="12sp"
-                    android:textColor="@color/black" />
-            </LinearLayout>
-
-            <!-- Kanan: Pendapatan -->
+            <!-- Kiri: Bulan -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.4"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingStart="6dp">
+                android:gravity="center_vertical">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp"
-                    app:cardBackgroundColor="@color/primaryBlue"
-                    app:cardElevation="2dp"
-                    android:padding="6dp">
+                    android:orientation="horizontal"
+                    android:gravity="bottom">
 
-                    <HorizontalScrollView
+                    <!-- Nama Hari -->
+                    <TextView
+                        android:id="@+id/txt_hari"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:text="Sat"
+                        android:textStyle="bold"
+                        android:textSize="24sp"
+                        android:layout_marginEnd="2dp"
+                        android:textColor="@color/black" />
+
+                    <!-- Tanggal -->
+                    <TextView
+                        android:id="@+id/txt_tanggalHarian"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scrollbars="none"
-                        android:paddingStart="0dp"
-                        android:paddingEnd="6dp">
-
-                        <TextView
-                            android:id="@+id/txt_pendapatanHarian"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rp. 123.456.789.456,00"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:textSize="12sp"
-                            android:padding="6dp"
-                            android:ellipsize="none"
-                            android:scrollHorizontally="true"
-                            android:singleLine="true"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true" />
-                    </HorizontalScrollView>
-                </com.google.android.material.card.MaterialCardView>
+                        android:text="17/05/2025"
+                        android:textSize="12sp"
+                        android:textColor="@color/black" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-
-        <!-- Garis horizontal -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/darkGrey"
-            android:layout_marginVertical="4dp" />
-
-        <!-- Baris 2 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <!-- Kiri: Jenis dan Media -->
+            <!-- Kanan: Pendapatan & Pengeluaran -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:gravity="bottom">
-
-                <!-- Jenis Transaksi -->
-                <FrameLayout
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:foregroundGravity="center_vertical">
-
-                    <TextView
-                        android:id="@+id/txt_jenis_transaksi"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Makan Siang dan Lain-Lain"
-                        android:textStyle="bold"
-                        android:textSize="12sp"
-                        android:textColor="@color/black"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical" />
-                </FrameLayout>
+                android:gravity="center_vertical">
 
                 <View
                     android:layout_width="1dp"
@@ -144,67 +73,180 @@
                     android:background="@color/darkGrey"
                     android:layout_marginHorizontal="4dp" />
 
-                <!-- Media Transaksi -->
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:foregroundGravity="center_vertical">
-
-                    <TextView
-                        android:id="@+id/txt_media_transaksi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="Transfer"
-                        android:textStyle="bold"
-                        android:textSize="12sp"
-                        android:textColor="@color/black"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical" />
-                </FrameLayout>
-            </LinearLayout>
-
-            <!-- Kanan: Pengeluaran -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.4"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingStart="6dp">
-
-                <com.google.android.material.card.MaterialCardView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp"
-                    app:cardBackgroundColor="@color/primaryRed"
-                    app:cardElevation="2dp"
-                    android:padding="6dp">
+                    android:orientation="vertical"
+                    android:gravity="center_vertical">
 
-                    <HorizontalScrollView
-                        android:layout_width="wrap_content"
+                    <!-- Pendapatan -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:scrollbars="none"
-                        android:paddingStart="0dp"
-                        android:paddingEnd="6dp">
+                        app:cardCornerRadius="8dp"
+                        app:cardBackgroundColor="@color/primaryBlue"
+                        app:cardElevation="2dp"
+                        android:layout_marginVertical="2dp"
+                        android:padding="6dp">
 
-                        <TextView
-                            android:id="@+id/txt_pengeluaranHarian"
+                        <HorizontalScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Rp. 123.456.789.456,00"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:textSize="12sp"
-                            android:padding="6dp"
-                            android:ellipsize="none"
-                            android:scrollHorizontally="true"
-                            android:singleLine="true"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true" />
-                    </HorizontalScrollView>
-                </com.google.android.material.card.MaterialCardView>
+                            android:scrollbars="none"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="6dp">
+
+                            <TextView
+                                android:id="@+id/txt_pendapatanHarian"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rp. 123.456.789.456.123.123.123.123.123,00"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:textSize="12sp"
+                                android:padding="6dp"
+                                android:ellipsize="none"
+                                android:scrollHorizontally="true"
+                                android:singleLine="true"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true" />
+                        </HorizontalScrollView>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Pengeluaran -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="8dp"
+                        app:cardBackgroundColor="@color/primaryRed"
+                        app:cardElevation="2dp"
+                        android:layout_marginVertical="2dp"
+                        android:padding="6dp">
+
+                        <HorizontalScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scrollbars="none"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="6dp">
+
+                            <TextView
+                                android:id="@+id/txt_pengeluaranHarian"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rp. 123.456.789.456,00"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:textSize="12sp"
+                                android:padding="6dp"
+                                android:ellipsize="none"
+                                android:scrollHorizontally="true"
+                                android:singleLine="true"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true" />
+                        </HorizontalScrollView>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
+        <!-- Tabel di bawah konten utama -->
+        <TableLayout
+            android:id="@+id/table_detail_harian"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/darkerWhite"
+            android:layout_marginTop="8dp"
+            android:stretchColumns="*"
+            android:visibility="gone">
+
+            <!-- Header -->
+            <TableRow>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Waktu"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:padding="6dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Jenis"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:padding="6dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Media"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:padding="6dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Masuk"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:padding="6dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Keluar"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:padding="6dp" />
+            </TableRow>
+
+            <!-- Contoh Baris -->
+            <TableRow>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="20:30"
+                    android:padding="6dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Makan"
+                    android:padding="6dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cash"
+                    android:padding="6dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Rp. 1.000.000.000.000"
+                    android:padding="6dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Rp. 200.000.000"
+                    android:padding="6dp" />
+            </TableRow>
+        </TableLayout>
     </LinearLayout>
+
+
 </com.google.android.material.card.MaterialCardView>
