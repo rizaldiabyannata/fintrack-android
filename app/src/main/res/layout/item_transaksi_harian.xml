@@ -24,7 +24,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/tv_title"
+                android:id="@+id/tv_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rab"
@@ -46,11 +46,11 @@
                 android:textSize="12sp"
                 android:background="@null"
                 android:includeFontPadding="false"
-                app:layout_constraintBaseline_toBaselineOf="@id/tv_title"
-                app:layout_constraintStart_toEndOf="@id/tv_title" />
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_day"
+                app:layout_constraintStart_toEndOf="@id/tv_day" />
 
             <TextView
-                android:id="@+id/tv_subtitle"
+                android:id="@+id/tv_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gaji"
@@ -60,7 +60,7 @@
                 android:includeFontPadding="false"
                 android:layout_marginTop="0dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_title" />
+                app:layout_constraintTop_toBottomOf="@id/tv_day" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/container_amount"

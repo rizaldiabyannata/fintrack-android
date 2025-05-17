@@ -18,19 +18,60 @@ class TabBulananFragment : Fragment(R.layout.fragment_tab_bulanan) {
         recyclerView = view.findViewById(R.id.recyclerViewBulanan)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        val dummyData = listOf(
-            DataBulanan("May", "16/05/25", "Rp. 100.100.123.456,00", "Rp. 50.000.000.000,00"),
-            DataBulanan("Jun", "17/06/25", "Rp. 200.000,00", "Rp. 75.000,00"),
-            DataBulanan("Jul", "18/07/25", "Rp. 100.000,00", "Rp. 40.000,00"),
-            DataBulanan("Aug", "19/08/25", "Rp. 150.000,00", "Rp. 60.000,00"),
-            DataBulanan("Sep", "20/09/25", "Rp. 90.000,00", "Rp. 30.000,00"),
-            DataBulanan("Oct", "21/10/25", "Rp. 300.000,00", "Rp. 150.000,00"),
-            DataBulanan("Nov", "22/11/25", "Rp. 250.000,00", "Rp. 100.000,00"),
-            DataBulanan("Dec", "23/12/25", "Rp. 180.000,00", "Rp. 80.000,00"),
-            DataBulanan("Jan", "24/01/26", "Rp. 220.000,00", "Rp. 120.000,00")
+        // Dummy data detail untuk setiap bulan
+        val detailMei = listOf(
+            DataBulanan("01", "Rp. 1.000.000.000.000.000,00", "Rp. 200.000.000.000.000,00"),
+            DataBulanan("02", "Rp. 500.000", "Rp. 100.000"),
+            DataBulanan("03", "Rp. 2.000.000", "Rp. 1.000.000"),
+            DataBulanan("04", "Rp. 1.000.000.000.000.000,00", "Rp. 200.000.000.000.000,00"),
+            DataBulanan("05", "Rp. 500.000", "Rp. 100.000"),
+            DataBulanan("06", "Rp. 2.000.000", "Rp. 1.000.000"),
+            DataBulanan("04", "Rp. 1.000.000.000.000.000,00", "Rp. 200.000.000.000.000,00"),
+            DataBulanan("05", "Rp. 500.000", "Rp. 100.000"),
+            DataBulanan("06", "Rp. 2.000.000", "Rp. 1.000.000")
+        )
+        val detailJun = listOf(
+            DataBulanan("01", "Rp. 1.200.000", "Rp. 300.000"),
+            DataBulanan("02", "Rp. 700.000", "Rp. 50.000")
+        )
+        val detailJul = listOf(
+            DataBulanan("04", "Rp. 800.000", "Rp. 100.000"),
+            DataBulanan("05", "Rp. 900.000", "Rp. 200.000")
+        )
+        val detailAgu = listOf(
+            DataBulanan("06", "Rp. 1.500.000", "Rp. 300.000"),
+            DataBulanan("07", "Rp. 1.000.000", "Rp. 250.000")
+        )
+        val detailSep = listOf(
+            DataBulanan("08", "Rp. 2.000.000", "Rp. 1.000.000"),
+            DataBulanan("09", "Rp. 1.000.000", "Rp. 200.000")
+        )
+        val detailOkt = listOf(
+            DataBulanan("10", "Rp. 1.800.000", "Rp. 900.000"),
+            DataBulanan("11", "Rp. 1.200.000", "Rp. 300.000")
+        )
+        val detailNov = listOf(
+            DataBulanan("12", "Rp. 2.500.000", "Rp. 1.000.000"),
+            DataBulanan("13", "Rp. 1.000.000", "Rp. 500.000")
+        )
+        val detailDes = listOf(
+            DataBulanan("14", "Rp. 2.200.000", "Rp. 800.000"),
+            DataBulanan("15", "Rp. 1.800.000", "Rp. 600.000")
         )
 
-        adapter = BulananAdapter(dummyData)
+        val dummySummaryData = listOf(
+            RangkumanBulanan("May", "2025", "Rp. 3.500.000.000.000.000.000,00", "Rp. 1.300.000.000.000.000.000,00", detailMei),
+            RangkumanBulanan("Jun", "2025", "Rp. 1.900.000", "Rp. 350.000", detailJun),
+            RangkumanBulanan("Jul", "2025", "Rp. 1.700.000", "Rp. 300.000", detailJul),
+            RangkumanBulanan("Aug", "2025", "Rp. 2.500.000", "Rp. 550.000", detailAgu),
+            RangkumanBulanan("Sep", "2025", "Rp. 3.000.000", "Rp. 1.200.000", detailSep),
+            RangkumanBulanan("Oct", "2025", "Rp. 3.000.000", "Rp. 1.200.000", detailOkt),
+            RangkumanBulanan("Nov", "2025", "Rp. 3.500.000", "Rp. 1.500.000", detailNov),
+            RangkumanBulanan("Dec", "2025", "Rp. 4.000.000", "Rp. 1.400.000", detailDes)
+        )
+
+
+        adapter = BulananAdapter(dummySummaryData)
         recyclerView.adapter = adapter
     }
 }
