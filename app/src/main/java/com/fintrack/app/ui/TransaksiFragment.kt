@@ -51,7 +51,7 @@ class TransaksiFragment : Fragment() {
 
         viewPager.adapter = TransaksiTabAdapter(this)
 
-        val tabTitles = listOf("Harian", "Kalender", "Bulanan", "Tutup Buku")
+        val tabTitles = listOf("Harian", "Bulanan", "Tutup Buku")
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabTitles[position]

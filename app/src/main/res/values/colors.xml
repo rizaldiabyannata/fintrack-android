@@ -8,4 +8,8 @@
     <color name="button_blue">#FF3461FD</color>
     <color name="secondaryGrey">#FF61677D</color>
     <color name="darkGrey">#4A4A4A</color>
+    <color name="progress_bar_color">#2196F3</color>
+    <color name="button_color">#2196F3</color>
+    <color name="export_button_text_color">#FFFFFFFF</color>
+    <color name="abu_abu">#D16E6E75</color>
 </resources>

@@ -7,4 +7,12 @@
     <string name="sign_in">Sign In</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="otp_description">Enter the OTP code we just sent you on your registered Email/Phone number</string>
+    <string name="internet">Internet</string>
+    <string name="assets">Aset</string>
+    <string name="categories">Categories</string>
+    <string name="budget">Budget</string>
+    <string name="food">Food</string>
+    <string name="daily_life">Daily Life</string>
+
+
 </resources>
