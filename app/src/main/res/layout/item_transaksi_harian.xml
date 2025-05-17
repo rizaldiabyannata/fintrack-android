@@ -5,206 +5,90 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    app:cardBackgroundColor="@color/white"
-    app:strokeColor="@color/darkGrey"
-    app:strokeWidth="1dp">
+    >
 
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="12dp">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="@color/white"
+        app:strokeColor="#E0E0E0"
+        app:strokeWidth="1dp"
+        app:cardPreventCornerOverlap="false"
+        >
 
-        <!-- Baris 1 -->
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:padding="16dp">
 
-            <!-- Kiri: Hari dan Tanggal -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.6"
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="bottom">
+                android:text="Rab"
+                android:textColor="#000000"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:background="@null"
+                android:includeFontPadding="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <!-- Nama Hari -->
-                <TextView
-                    android:id="@+id/txt_hari"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:text="Wed"
-                    android:textStyle="bold"
-                    android:textSize="24sp"
-                    android:layout_marginEnd="2dp"
-                    android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="01/04/25"
+                android:textColor="#757575"
+                android:textSize="12sp"
+                android:background="@null"
+                android:includeFontPadding="false"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_title"
+                app:layout_constraintStart_toEndOf="@id/tv_title" />
 
-                <!-- Tanggal -->
+            <TextView
+                android:id="@+id/tv_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gaji"
+                android:textColor="#9E9E9E"
+                android:textSize="16sp"
+                android:background="@null"
+                android:includeFontPadding="false"
+                android:layout_marginTop="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/container_amount"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="25dp"
+                app:cardBackgroundColor="#4D6CFF"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
                 <TextView
-                    android:id="@+id/txt_tanggalHarian"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_amount"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="16/05/25"
+                    android:paddingStart="15dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="15dp"
+                    android:paddingBottom="5dp"
+                    android:text="Rp3.000.000,00"
+                    android:textColor="#FFFFFF"
                     android:textSize="12sp"
-                    android:textColor="@color/black" />
-            </LinearLayout>
+                    android:includeFontPadding="false"
+                    android:gravity="center" />
 
-            <!-- Kanan: Pendapatan -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.4"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingStart="6dp">
+            </androidx.cardview.widget.CardView>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp"
-                    app:cardBackgroundColor="@color/primaryBlue"
-                    app:cardElevation="2dp"
-                    android:padding="6dp">
-
-                    <HorizontalScrollView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:scrollbars="none"
-                        android:paddingStart="0dp"
-                        android:paddingEnd="6dp">
-
-                        <TextView
-                            android:id="@+id/txt_pendapatanHarian"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rp. 123.456.789.456,00"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:textSize="12sp"
-                            android:padding="6dp"
-                            android:ellipsize="none"
-                            android:scrollHorizontally="true"
-                            android:singleLine="true"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true" />
-                    </HorizontalScrollView>
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
-        </LinearLayout>
-
-
-        <!-- Garis horizontal -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/darkGrey"
-            android:layout_marginVertical="4dp" />
-
-        <!-- Baris 2 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <!-- Kiri: Jenis dan Media -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.6"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="bottom">
-
-                <!-- Jenis Transaksi -->
-                <FrameLayout
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:foregroundGravity="center_vertical">
-
-                    <TextView
-                        android:id="@+id/txt_jenis_transaksi"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Makan Siang dan Lain-Lain"
-                        android:textStyle="bold"
-                        android:textSize="12sp"
-                        android:textColor="@color/black"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical" />
-                </FrameLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/darkGrey"
-                    android:layout_marginHorizontal="4dp" />
-
-                <!-- Media Transaksi -->
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:foregroundGravity="center_vertical">
-
-                    <TextView
-                        android:id="@+id/txt_media_transaksi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="Transfer"
-                        android:textStyle="bold"
-                        android:textSize="12sp"
-                        android:textColor="@color/black"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical" />
-                </FrameLayout>
-            </LinearLayout>
-
-            <!-- Kanan: Pengeluaran -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.4"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingStart="6dp">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp"
-                    app:cardBackgroundColor="@color/primaryRed"
-                    app:cardElevation="2dp"
-                    android:padding="6dp">
-
-                    <HorizontalScrollView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:scrollbars="none"
-                        android:paddingStart="0dp"
-                        android:paddingEnd="6dp">
-
-                        <TextView
-                            android:id="@+id/txt_pengeluaranHarian"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rp. 123.456.789.456,00"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:textSize="12sp"
-                            android:padding="6dp"
-                            android:ellipsize="none"
-                            android:scrollHorizontally="true"
-                            android:singleLine="true"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true" />
-                    </HorizontalScrollView>
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </com.google.android.material.card.MaterialCardView>
