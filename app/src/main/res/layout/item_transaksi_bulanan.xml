@@ -2,219 +2,67 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/month_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    app:cardBackgroundColor="@color/white"
-    app:strokeColor="@color/darkGrey"
-    app:strokeWidth="1dp">
+    app:cardBackgroundColor="#F9F9F9">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp">
+        android:padding="16dp">
 
-        <!-- Baris Utama: Bulan, Pendapatan, Pengeluaran -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_month"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="Jan"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-            <!-- Kiri: Bulan -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.4"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="bottom">
-
-                    <!-- Nama Bulan -->
-                    <TextView
-                        android:id="@+id/txt_bulan"
-                        android:layout_width="60dp"
-                        android:layout_height="40dp"
-                        android:text="May"
-                        android:textStyle="bold"
-                        android:textSize="24sp"
-                        android:layout_marginEnd="2dp"
-                        android:textColor="@color/black" />
-
-                    <!-- Tahun -->
-                    <TextView
-                        android:id="@+id/txt_tahunBulanan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2025"
-                        android:textSize="12sp"
-                        android:textColor="@color/black" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Kanan: Pendapatan & Pengeluaran -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.6"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/darkGrey"
-                    android:layout_marginHorizontal="4dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_vertical">
-
-                    <!-- Pendapatan -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="8dp"
-                        app:cardBackgroundColor="@color/primaryBlue"
-                        app:cardElevation="2dp"
-                        android:layout_marginVertical="2dp"
-                        android:padding="6dp">
-
-                        <HorizontalScrollView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:scrollbars="none"
-                            android:paddingStart="0dp"
-                            android:paddingEnd="6dp">
-
-                            <TextView
-                                android:id="@+id/txt_pendapatanBulanan"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 123.456.789.456.123.123.123.123.123,00"
-                                android:textColor="@color/white"
-                                android:textStyle="bold"
-                                android:textSize="12sp"
-                                android:padding="6dp"
-                                android:ellipsize="none"
-                                android:scrollHorizontally="true"
-                                android:singleLine="true"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true" />
-                        </HorizontalScrollView>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- Pengeluaran -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="8dp"
-                        app:cardBackgroundColor="@color/primaryRed"
-                        app:cardElevation="2dp"
-                        android:layout_marginVertical="2dp"
-                        android:padding="6dp">
-
-                        <HorizontalScrollView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:scrollbars="none"
-                            android:paddingStart="0dp"
-                            android:paddingEnd="6dp">
-
-                            <TextView
-                                android:id="@+id/txt_pengeluaranBulanan"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 123.456.789.456,00"
-                                android:textColor="@color/white"
-                                android:textStyle="bold"
-                                android:textSize="12sp"
-                                android:padding="6dp"
-                                android:ellipsize="none"
-                                android:scrollHorizontally="true"
-                                android:singleLine="true"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true" />
-                        </HorizontalScrollView>
-                    </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Tabel di bawah konten utama -->
-        <TableLayout
-            android:id="@+id/table_detail_bulanan"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_year"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/darkerWhite"
-            android:layout_marginTop="8dp"
-            android:stretchColumns="*"
-            android:visibility="gone">
+            android:layout_marginStart="4dp"
+            android:text="2025"
+            android:textColor="#757575"
+            android:textSize="16sp"
+            android:includeFontPadding="false"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_month"
+            app:layout_constraintStart_toEndOf="@id/tv_month" />
 
-            <!-- Header -->
-            <TableRow>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Tanggal"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:padding="6dp" />
+        <TextView
+            android:id="@+id/tv_income"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp. 0,00"
+            android:textSize="16sp"
+            android:textColor="#4285F4"
+            app:layout_constraintEnd_toStartOf="@id/tv_expense"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="24dp" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Masuk"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:padding="6dp" />
+        <TextView
+            android:id="@+id/tv_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp. 0,00"
+            android:textSize="16sp"
+            android:textColor="#F44336"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Keluar"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:padding="6dp" />
-            </TableRow>
-
-            <!-- Contoh Baris -->
-            <TableRow>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="1"
-                    android:padding="6dp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Rp. 1.000.000.000.000"
-                    android:padding="6dp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Rp. 200.000.000"
-                    android:padding="6dp" />
-            </TableRow>
-        </TableLayout>
-    </LinearLayout>
-
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

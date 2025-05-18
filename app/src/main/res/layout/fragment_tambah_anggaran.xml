@@ -1,188 +1,258 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_anggaran"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/primaryBlue"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/button_kembali_anggaran"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_back"
-            app:tint="@color/white"
-            android:paddingEnd="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:contentDescription="Kembali" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Anggaran"
-            android:textSize="18sp"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center" />
+    <!-- Toolbar as ConstraintLayout - more efficient than using Toolbar for simple layouts -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/button_tambah_anggaran"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_add"
-            app:tint="@android:color/white"
-            android:layout_gravity="end"
-            android:paddingStart="16dp"
-            android:paddingEnd="10dp"
+            android:id="@+id/btn_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
-            android:contentDescription="Tambah Anggaran"/> </androidx.appcompat.widget.Toolbar>
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black"
+            tools:contentDescription="Kembali"
+            tools:ignore="HardcodedText" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/text_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="0dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_back"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText"
+            tools:text="Anggaran" />
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/btn_add"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@android:color/black"
+            tools:contentDescription="Tambah Anggaran"
+            tools:ignore="HardcodedText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Gray divider line below the toolbar -->
+    <View
+        android:id="@+id/divider_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#DDDDDD"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/container_toolbar" />
+
+    <!-- Using NestedScrollView instead of ScrollView for better performance with ConstraintLayout -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="10dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Guideline for icons alignment -->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_start_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="16dp">
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="8dp" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_people"
-                    android:contentDescription="Kehidupan Sosial" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Kehidupan Sosial"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Rp 2.000.000,00"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/darker_gray" />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@android:drawable/ic_menu_edit"
-                    app:tint="@android:color/darker_gray"
-                    android:contentDescription="Edit Kehidupan Sosial"/> </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Guideline for text alignment -->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_start_text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="16dp">
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="48dp" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_restaurant"
-                    android:contentDescription="Makanan" />
+            <!-- Kehidupan Sosial -->
+            <ImageView
+                android:id="@+id/image_kehidupan_sosial"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="16dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_people"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_icon"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Makanan"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Rp 500.000,00"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/darker_gray" />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@android:drawable/ic_menu_edit"
-                    app:tint="@android:color/darker_gray"
-                    android:contentDescription="Edit Makanan"/> </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_title_kehidupan_sosial"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="16dp">
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@id/button_edit_kehidupan_sosial"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_text"
+                app:layout_constraintTop_toTopOf="@id/image_kehidupan_sosial"
+                tools:ignore="HardcodedText"
+                tools:text="Kehidupan Sosial" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_globe"
-                    android:contentDescription="Internet"/>
+            <TextView
+                android:id="@+id/text_amount_kehidupan_sosial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@id/button_edit_kehidupan_sosial"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_text"
+                app:layout_constraintTop_toBottomOf="@id/text_title_kehidupan_sosial"
+                tools:ignore="HardcodedText"
+                tools:text="Rp 2.000.000,00" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="16dp">
+            <ImageView
+                android:id="@+id/button_edit_kehidupan_sosial"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_pencil"
+                app:layout_constraintBottom_toBottomOf="@id/text_amount_kehidupan_sosial"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_title_kehidupan_sosial"
+                app:tint="@android:color/black"
+                tools:ignore="HardcodedText"
+                tools:contentDescription="Edit Kehidupan Sosial" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Internet"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black" />
+            <!-- Makanan -->
+            <ImageView
+                android:id="@+id/image_makanan"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="24dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_restaurant"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_icon"
+                app:layout_constraintTop_toBottomOf="@id/text_amount_kehidupan_sosial" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Rp 500.000,00"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/darker_gray" />
+            <TextView
+                android:id="@+id/text_title_makanan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@id/button_edit_makanan"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_text"
+                app:layout_constraintTop_toTopOf="@id/image_makanan"
+                tools:ignore="HardcodedText"
+                tools:text="Makanan" />
 
-                </LinearLayout>
+            <TextView
+                android:id="@+id/text_amount_makanan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@id/button_edit_makanan"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_text"
+                app:layout_constraintTop_toBottomOf="@id/text_title_makanan"
+                tools:ignore="HardcodedText"
+                tools:text="Rp 500.000,00" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@android:drawable/ic_menu_edit"
-                    app:tint="@android:color/darker_gray"
-                    android:contentDescription="Edit Internet"/> </LinearLayout>
+            <ImageView
+                android:id="@+id/button_edit_makanan"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_pencil"
+                app:layout_constraintBottom_toBottomOf="@id/text_amount_makanan"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_title_makanan"
+                app:tint="@android:color/black"
+                tools:ignore="HardcodedText"
+                tools:contentDescription="Edit Makanan" />
 
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+            <!-- Internet -->
+            <ImageView
+                android:id="@+id/image_internet"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="24dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_globe"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_icon"
+                app:layout_constraintTop_toBottomOf="@id/text_amount_makanan" />
+
+            <TextView
+                android:id="@+id/text_title_internet"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@id/button_edit_internet"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_text"
+                app:layout_constraintTop_toTopOf="@id/image_internet"
+                tools:ignore="HardcodedText"
+                tools:text="Internet" />
+
+            <TextView
+                android:id="@+id/text_amount_internet"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@id/button_edit_internet"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_text"
+                app:layout_constraintTop_toBottomOf="@id/text_title_internet"
+                tools:ignore="HardcodedText"
+                tools:text="Rp 500.000,00" />
+
+            <ImageView
+                android:id="@+id/button_edit_internet"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_pencil"
+                app:layout_constraintBottom_toBottomOf="@id/text_amount_internet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_title_internet"
+                app:tint="@android:color/black"
+                tools:ignore="HardcodedText"
+                tools:contentDescription="Edit Internet" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
