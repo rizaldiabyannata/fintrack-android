@@ -22,4 +22,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Fintrack"
 include(":app")
- 

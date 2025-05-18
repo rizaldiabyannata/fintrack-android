@@ -32,11 +32,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginTop="16dp"
-        android:background="@color/primaryBlue"
-        android:padding="5dp"
+        android:background="@drawable/rounded_blue"
+        android:paddingHorizontal="30dp"
         android:text="20%"
         android:textColor="@color/white"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tabchart" />
 
@@ -72,11 +72,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginTop="16dp"
-        android:background="@color/primaryRed"
-        android:padding="5dp"
+        android:background="@drawable/rounded_red"
+        android:paddingHorizontal="30dp"
         android:text="20%"
         android:textColor="@color/white"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_persenKat1" />
 

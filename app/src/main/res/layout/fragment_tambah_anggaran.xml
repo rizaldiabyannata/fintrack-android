@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="8dp" />
+                app:layout_constraintGuide_end="382dp" />
 
             <!-- Guideline for text alignment -->
             <androidx.constraintlayout.widget.Guideline
@@ -101,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="48dp" />
+                app:layout_constraintGuide_begin="56dp" />
 
             <!-- Kehidupan Sosial -->
             <ImageView
