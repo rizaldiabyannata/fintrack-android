@@ -2,7 +2,15 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="darkerWhite">#BCBCBC</color>
     <color name="primaryBlue">#FF2A4ECA</color>
+    <color name="primaryRed">#FFCA2A4E</color>
+    <color name="primaryGrey">#7A7A7A</color>
     <color name="button_blue">#FF3461FD</color>
     <color name="secondaryGrey">#FF61677D</color>
+    <color name="darkGrey">#4A4A4A</color>
+    <color name="progress_bar_color">#2196F3</color>
+    <color name="button_color">#2196F3</color>
+    <color name="export_button_text_color">#FFFFFFFF</color>
+    <color name="abu_abu">#D16E6E75</color>
 </resources>

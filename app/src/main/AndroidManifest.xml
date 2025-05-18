@@ -12,8 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Fintrack"
         tools:targetApi="31">
+
         <activity
             android:name=".ui.SignUpActivity"
+            android:exported="true">
+<!--&lt;!&ndash;            <intent-filter>&ndash;&gt;-->
+<!--&lt;!&ndash;                <action android:name="android.intent.action.MAIN" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;                <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;-->
+<!--&lt;!&ndash;            </intent-filter>&ndash;&gt;-->
+        </activity>
+        <activity android:name=".ui.SignInActivity"
+            android:exported="true">
+
+        </activity>
+        <activity android:name=".ui.NavigationActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,10 +34,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.SignInActivity"
-            android:exported="true">
+        <activity android:name="com.fintrack.app.ui.transaksi.TambahAnggaranActivity" android:exported="false" />
+        <activity android:name="com.fintrack.app.ui.transaksi.TambahAnggaranBaruActivity" android:exported="false" />
 
-        </activity>
     </application>
+
 
 </manifest>
