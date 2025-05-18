@@ -3,21 +3,18 @@ package com.fintrack.app.ui
 import LainnyaFragment
 import StatistikFragment
 import TransaksiFragment
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.fintrack.app.R
-import com.fintrack.app.databinding.ActivitySignInBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class CihuyActivity : AppCompatActivity() {
+class NavigationActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cihuy)
+        setContentView(R.layout.activity_navigation)
 
         bottomNavigationView = findViewById(R.id.bottom_navigation)
 
