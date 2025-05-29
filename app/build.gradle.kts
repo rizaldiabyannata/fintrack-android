@@ -8,6 +8,15 @@ android {
     namespace = "com.fintrack.app"
     compileSdk = 35
 
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("../team-debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.fintrack.app"
         minSdk = 24
@@ -19,6 +28,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -52,10 +65,19 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-//    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
-//    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+    // Firebase - UNCOMMENT dan UPDATE version
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-auth-ktx")
 
-//    implementation("com.google.firebase:firebase-auth")
+    // Coroutines untuk async operations
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+
+    // OkHttp untuk API calls ke backend
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    // ViewBinding dan Activity KTX
+    implementation("androidx.activity:activity-ktx:1.8.2")
 
     // Also add the dependencies for the Credential Manager libraries and specify their versions
     implementation("androidx.credentials:credentials:1.3.0")
@@ -67,6 +89,4 @@ dependencies {
 
     // Chart and graph library
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
-
 }
