@@ -78,7 +78,7 @@
             android:id="@+id/et_email_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email/Phone Number"
+            android:hint="Email"
             android:inputType="textEmailAddress|phone"/>
     </com.google.android.material.textfield.TextInputLayout>
 

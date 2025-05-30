@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Fintrack</string>
-
-
     <string name="default_web_client_id">974829450251-pbtrmqt6jhks8brrbvtok3iee6sadiks.apps.googleusercontent.com</string>
     <string name="signInDescription">It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum.</string>
     <string name="sign_in">Sign In</string>

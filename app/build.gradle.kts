@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-//    id("com.google.gms.google-services")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -10,7 +10,7 @@ android {
 
     signingConfigs {
         getByName("debug") {
-            storeFile = file("../team-debug.keystore")
+            storeFile = file("../team-debug.keystore.jks")
             storePassword = "android"
             keyAlias = "androiddebugkey"
             keyPassword = "android"
@@ -86,6 +86,9 @@ dependencies {
 
     implementation("com.google.android.material:material:1.12.0")
     implementation("com.google.android.gms:play-services-auth:21.0.0")
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Chart and graph library
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")

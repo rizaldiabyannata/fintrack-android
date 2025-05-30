@@ -1,4 +1,4 @@
-package com.fintrack.app.ui.data
+package com.fintrack.app.data
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
