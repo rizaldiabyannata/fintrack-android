@@ -1,64 +1,57 @@
 package com.fintrack.app.service
 
-import com.fintrack.app.data.UserPayload
-import okhttp3.ResponseBody
-import retrofit2.Call
+import com.fintrack.app.data.request.LoginRequest
+import com.fintrack.app.data.request.RegisterRequest
+import com.fintrack.app.data.request.UserPayload
+import com.fintrack.app.data.response.BaseResponse
+import com.fintrack.app.data.response.LoginResponse
+import com.fintrack.app.data.response.VerifyOtpResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface AuthApiService {
 
-    // Google Sign-In / Register
-    @POST("api/auth/google")
-    fun postUserData(
-        @Header("Authorization") authHeader: String,
-        @Body user: UserPayload
-    ): Call<ResponseBody>
-
-    // Email/Password Registration
     @POST("api/auth/register")
-    fun registerUser(
-        @Body user: UserPayload
-    ): Call<ResponseBody>
+    suspend fun register(
+        @Body registerRequest: RegisterRequest
+    ): Response<BaseResponse>
 
-    // Email/Password Login
     @POST("api/auth/login")
-    fun loginUser(
-        @Body loginData: Map<String, String>
-    ): Call<ResponseBody>
+    suspend fun login(
+        @Header("Authorization") firebaseToken: String,
+        @Body loginRequest: LoginRequest
+    ): Response<LoginResponse>
 
-    // Password Reset Request (send OTP)
+    @POST("api/auth/google")
+    suspend fun loginWithGoogle(
+        @Header("Authorization") firebaseToken: String,
+        @Body userPayload: UserPayload
+    ): Response<LoginResponse>
+
     @POST("api/auth/reset-password")
-    fun resetPassword(
+    suspend fun requestPasswordReset(
         @Body emailData: Map<String, String>
-    ): Call<ResponseBody>
+    ): Response<BaseResponse>
 
-    // Verify Password Reset OTP
     @POST("api/auth/verify-reset-password-otp")
-    fun verifyResetPasswordOTP(
+    suspend fun verifyResetPasswordOtp(
         @Body otpData: Map<String, String>
-    ): Call<ResponseBody>
+    ): Response<VerifyOtpResponse>
 
-    // Set New Password (after OTP verification)
     @POST("api/auth/set-new-password")
-    fun setNewPassword(
+    suspend fun setNewPassword(
         @Body passwordData: Map<String, String>
-    ): Call<ResponseBody>
+    ): Response<BaseResponse>
 
-    // Resend Email Verification OTP
-    @POST("api/auth/resend-verification")
-    fun resendEmailVerification(
-        @Body emailData: Map<String, String>
-    ): Call<ResponseBody>
-
-    // Verify Email OTP
     @POST("api/auth/verify-email-otp")
-    fun verifyEmailOTP(
+    suspend fun verifyEmailOtp(
         @Body otpData: Map<String, String>
-    ): Call<ResponseBody>
+    ): Response<LoginResponse>
 
-    // Test endpoint (Optional)
-    @POST("api/auth/test")
-    fun testEndpoint(): Call<ResponseBody>
+    @POST("api/auth/resend-verification")
+    suspend fun resendVerificationOtp(
+        @Body emailData: Map<String, String>
+    ): Response<BaseResponse>
 }
