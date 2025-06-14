@@ -41,7 +41,7 @@ class SignUpActivity : AppCompatActivity() {
         private const val TAG = "SignUpActivity"
         private const val RC_SIGN_IN = 9001
         private const val PREFS_NAME = "user_prefs"
-        private const val BASE_URL = "http://192.168.1.13:3000/" // ganti dengan URL server Anda
+        private const val BASE_URL = "http://18.142.179.208:3000/" // ganti dengan URL server Anda
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

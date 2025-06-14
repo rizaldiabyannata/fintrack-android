@@ -43,7 +43,7 @@ class ResetPasswordActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "ResetPasswordActivity"
         private const val PREFS_NAME = "user_prefs"
-        private const val BASE_URL = "http://192.168.1.13:3000/"
+        private const val BASE_URL = "http://18.142.179.208:3000/"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
