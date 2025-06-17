@@ -18,6 +18,8 @@ class SessionManager @Inject constructor(private val prefs: SharedPreferences) {
         const val KEY_EMAIL = "email"
         const val KEY_PROVIDER = "provider"
         const val KEY_IS_LOGGED_IN = "isLoggedIn"
+        const val TOKEN = "token"
+        const val REFRESHTOKEN = "refreshToken"
     }
 
     /**

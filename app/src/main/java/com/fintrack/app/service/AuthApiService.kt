@@ -20,12 +20,13 @@ interface AuthApiService {
 
     @POST("api/auth/login")
     suspend fun login(
+//        @Header("Authorization") token: String,
         @Body loginRequest: LoginRequest
     ): Response<LoginResponse>
 
     @POST("api/auth/google")
     suspend fun loginWithGoogle(
-        @Header("Authorization") firebaseToken: String,
+        @Header("Authorization") token: String,
         @Body userPayload: UserPayload
     ): Response<LoginResponse>
 

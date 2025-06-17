@@ -10,5 +10,8 @@ data class LoginResponse(
     val message: String,
 
     @SerializedName("user")
-    val user: User
+    val user: User,
+
+    @SerializedName("token")
+    val token: String
 )
