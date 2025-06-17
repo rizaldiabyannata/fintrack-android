@@ -24,8 +24,9 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".ui.signin.SignInActivity"
-            android:exported="true">
+            android:name=".ui.navigation.NavigationActivity"
+            android:exported="true"
+            tools:ignore="Instantiatable">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

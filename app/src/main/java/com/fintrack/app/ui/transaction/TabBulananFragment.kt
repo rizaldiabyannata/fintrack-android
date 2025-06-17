@@ -6,6 +6,7 @@
 //import androidx.recyclerview.widget.LinearLayoutManager
 //import androidx.recyclerview.widget.RecyclerView
 //import com.fintrack.app.R
+//import com.fintrack.app.ui.transaksi.BulananAdapter
 //
 //class TabBulananFragment : Fragment(R.layout.fragment_tab_bulanan) {
 //

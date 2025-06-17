@@ -11,17 +11,18 @@
 //import android.widget.TextView
 //import androidx.recyclerview.widget.RecyclerView
 //import com.fintrack.app.R
+//import com.fintrack.app.ui.transaction.RangkumanBulanan
 //
 //class BulananAdapter(
 //    private val dataList: List<RangkumanBulanan>
 //) : RecyclerView.Adapter<BulananAdapter.BulananViewHolder>() {
 //
-////    inner class BulananViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-////        val txtBulan: TextView = itemView.findViewById(R.id.txt_bulan)
-////        val txtTanggal: TextView = itemView.findViewById(R.id.txt_tahunBulanan)
-////        val txtPendapatan: TextView = itemView.findViewById(R.id.txt_pendapatanBulanan)
-////        val txtPengeluaran: TextView = itemView.findViewById(R.id.txt_pengeluaranBulanan)
-////        val tableDetail: TableLayout = itemView.findViewById(R.id.table_detail_bulanan)
+//    inner class BulananViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+//        val txtBulan: TextView = itemView.findViewById(R.id.tv_month)
+//        val txtTanggal: TextView = itemView.findViewById(R.id.tv_year)
+//        val txtPendapatan: TextView = itemView.findViewById(R.id.tv_income)
+//        val txtPengeluaran: TextView = itemView.findViewById(R.id.tv_expense)
+//        val tableDetail: TableLayout = itemView.findViewById(R.id.table_detail_bulanan)
 //    }
 //
 //    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BulananViewHolder {
