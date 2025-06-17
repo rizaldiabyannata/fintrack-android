@@ -18,6 +18,7 @@ import com.fintrack.app.data.request.LoginRequest
 import com.fintrack.app.data.request.UserPayload
 import com.fintrack.app.data.response.User
 import com.fintrack.app.databinding.ActivitySignInBinding
+import com.fintrack.app.ui.navigation.NavigationActivity
 import com.fintrack.app.ui.otp.OTPVerificationActivity
 import com.fintrack.app.ui.profile.ProfileActivity
 import com.fintrack.app.ui.signup.SignUpActivity
@@ -249,7 +250,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun navigateToMain() {
-        val intent = Intent(this, ProfileActivity::class.java).apply {
+        val intent = Intent(this, NavigationActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)

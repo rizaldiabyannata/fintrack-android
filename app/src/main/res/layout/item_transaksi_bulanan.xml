@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/month_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    app:cardBackgroundColor="#F9F9F9"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="#F9F9F9">
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,25 +18,25 @@
             android:id="@+id/tv_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Jan"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
             android:includeFontPadding="false"
             android:lineSpacingExtra="0dp"
+            android:text="Jan"
+            android:textColor="#000000"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:includeFontPadding="false"
             android:text="2025"
             android:textColor="#757575"
             android:textSize="16sp"
-            android:includeFontPadding="false"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_month"
             app:layout_constraintStart_toEndOf="@id/tv_month" />
 
@@ -45,24 +44,92 @@
             android:id="@+id/tv_income"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
             android:text="Rp. 0,00"
-            android:textSize="16sp"
             android:textColor="#4285F4"
-            app:layout_constraintEnd_toStartOf="@id/tv_expense"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginEnd="24dp" />
+            app:layout_constraintEnd_toStartOf="@id/tv_expense"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_expense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rp. 0,00"
-            android:textSize="16sp"
             android:textColor="#F44336"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TableLayout
+        android:id="@+id/table_detail_bulanan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/darkerWhite"
+        android:stretchColumns="*"
+        android:visibility="gone">
+
+
+        <!-- Header -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="6dp"
+                android:text="Tanggal"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="6dp"
+                android:text="Masuk"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="6dp"
+                android:text="Keluar"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Contoh Baris -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="6dp"
+                android:text="1" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="6dp"
+                android:text="Rp. 1.000.000.000.000" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="6dp"
+                android:text="Rp. 200.000.000" />
+        </TableRow>
+    </TableLayout>
 </com.google.android.material.card.MaterialCardView>
