@@ -1,6 +1,7 @@
 package com.fintrack.app.ui.signin
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -11,13 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.fintrack.app.R
 import com.fintrack.app.data.AuthRepository
+import com.fintrack.app.data.SessionManager
 import com.fintrack.app.data.network.ApiResponse
 import com.fintrack.app.data.request.LoginRequest
 import com.fintrack.app.data.request.UserPayload
+import com.fintrack.app.data.response.User
 import com.fintrack.app.databinding.ActivitySignInBinding
-//import com.fintrack.app.ui.navigation.NavigationActivity //Nanti di sesuai kan ketika navigation telah selesai
-import com.fintrack.app.ui.profile.ProfileActivity
 import com.fintrack.app.ui.otp.OTPVerificationActivity
+import com.fintrack.app.ui.profile.ProfileActivity
 import com.fintrack.app.ui.signup.SignUpActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -34,6 +36,10 @@ class SignInActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignInBinding
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var sharedPreferences: SharedPreferences
+
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     @Inject
     lateinit var repository: AuthRepository
@@ -43,6 +49,7 @@ class SignInActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "SignInActivity"
+        private const val PREFS_NAME = "user_prefs"
     }
 
     private val googleSignInLauncher = registerForActivityResult(
@@ -68,8 +75,9 @@ class SignInActivity : AppCompatActivity() {
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Langsung cek apakah user sudah login di Firebase
-        if (firebaseAuth.currentUser != null && firebaseAuth.currentUser!!.isEmailVerified) {
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+
+        if (firebaseAuth.currentUser != null) {
             navigateToMain()
             return
         }
@@ -92,7 +100,7 @@ class SignInActivity : AppCompatActivity() {
             googleSignInLauncher.launch(googleSignInClient.signInIntent)
         }
 
-        binding.tvCreateAccount.setOnClickListener {
+        binding.btnSignin.setOnClickListener {
             val email = binding.etEmailPhone.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
 
@@ -102,11 +110,41 @@ class SignInActivity : AppCompatActivity() {
         }
 
         binding.forgotPasswordSignIn.setOnClickListener {
-            // Logika untuk forgot password bisa ditambahkan di sini
+            val email = binding.etEmailPhone.text.toString().trim()
+            if (email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                requestPasswordReset(email)
+            } else {
+                binding.etEmailPhone.error = "Masukkan email yang valid untuk reset password"
+            }
         }
 
         binding.tvCreateAccount.setOnClickListener {
             startActivity(Intent(this, SignUpActivity::class.java))
+        }
+    }
+
+    private fun requestPasswordReset(email: String){
+        lifecycleScope.launch {
+            repository.requestPasswordReset(email).collect { state ->
+                when (state) {
+                    is ApiResponse.Loading -> showLoading(true)
+                    is ApiResponse.Success -> {
+                        showLoading(false)
+                        displayToast(state.data.message)
+                        // Arahkan ke OTP setelah permintaan berhasil
+                        val intent = Intent(this@SignInActivity, OTPVerificationActivity::class.java).apply {
+                            putExtra(OTPVerificationActivity.EXTRA_EMAIL, email)
+                            putExtra(OTPVerificationActivity.EXTRA_OTP_TYPE, OTPVerificationActivity.OTPType.RESET_PASSWORD.value)
+                        }
+                        startActivity(intent)
+                    }
+                    is ApiResponse.Error -> {
+                        showLoading(false)
+                        displayToast(state.errorMessage)
+                    }
+                    else -> showLoading(false)
+                }
+            }
         }
     }
 
@@ -117,12 +155,12 @@ class SignInActivity : AppCompatActivity() {
                     is ApiResponse.Loading -> showLoading(true)
                     is ApiResponse.Success -> {
                         showLoading(false)
+                        sessionManager.saveUserSession(state.data.user)
                         displayToast("Welcome back, ${state.data.user.name}!")
                         navigateToMain()
                     }
                     is ApiResponse.Error -> {
                         showLoading(false)
-                        // Jika error karena email belum terverifikasi, arahkan ke OTP
                         if (state.errorMessage.contains("Email belum terverifikasi")) {
                             navigateToOTPVerification(loginRequest.email)
                         } else {
@@ -163,9 +201,10 @@ class SignInActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repository.loginWithGoogle(token, payload).collect { state ->
                 when (state) {
-                    is ApiResponse.Loading -> { /* Loading sudah ditangani */ }
+                    is ApiResponse.Loading -> { /* Loading ditangani di awal */ }
                     is ApiResponse.Success -> {
                         showLoading(false)
+                        sessionManager.saveUserSession(state.data.user)
                         displayToast("Welcome, ${state.data.user.name}!")
                         navigateToMain()
                     }
@@ -177,6 +216,16 @@ class SignInActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun saveUserToPrefs(user: User) {
+        val editor = sharedPreferences.edit()
+        editor.putString("uid", user.uid)
+        editor.putString("name", user.name)
+        editor.putString("email", user.email)
+        editor.putString("provider", user.provider)
+        editor.putBoolean("isLoggedIn", true)
+        editor.apply()
     }
 
     private fun validateInput(email: String, password: String): Boolean {
@@ -200,7 +249,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun navigateToMain() {
-        val intent = Intent(this@SignInActivity, ProfileActivity::class.java).apply {
+        val intent = Intent(this, ProfileActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)
@@ -208,8 +257,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        // Ganti dengan ProgressBar jika ada
-        binding.btnSignin.isEnabled= !isLoading
+        binding.btnSignin.isEnabled = !isLoading
         binding.btnGoogle.isEnabled = !isLoading
     }
 

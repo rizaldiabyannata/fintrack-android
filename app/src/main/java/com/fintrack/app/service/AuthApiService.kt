@@ -20,7 +20,6 @@ interface AuthApiService {
 
     @POST("api/auth/login")
     suspend fun login(
-        @Header("Authorization") firebaseToken: String,
         @Body loginRequest: LoginRequest
     ): Response<LoginResponse>
 

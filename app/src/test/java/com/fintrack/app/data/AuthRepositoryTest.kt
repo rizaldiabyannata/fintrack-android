@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import org.json.JSONObject
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -31,7 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class AuthRepositoryTest {
 
-    // --- Mocks untuk Firebase dan Tasks ---
+    // --- Mocks ---
     @Mock private lateinit var firebaseAuth: FirebaseAuth
     @Mock private lateinit var authResultTask: Task<AuthResult>
     @Mock private lateinit var createUserTask: Task<AuthResult>
@@ -40,7 +41,7 @@ class AuthRepositoryTest {
     @Mock private lateinit var idTokenTask: Task<GetTokenResult>
     @Mock private lateinit var getTokenResult: GetTokenResult
 
-    // --- Komponen untuk diuji ---
+    // --- Test Components ---
     private lateinit var mockWebServer: MockWebServer
     private lateinit var apiService: AuthApiService
     private lateinit var repository: AuthRepository
@@ -52,7 +53,7 @@ class AuthRepositoryTest {
         mockWebServer.start()
 
         apiService = Retrofit.Builder()
-            .baseUrl(mockWebServer.url("/"))
+            .baseUrl(mockWebServer.url("http://192.168.100.7:3000"))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(AuthApiService::class.java)
@@ -66,85 +67,94 @@ class AuthRepositoryTest {
     }
 
     // =================================================================
-    // == PENGUJIAN UNTUK REGISTRASI (SIGN UP) ==
+    // == PENGUJIAN UNTUK SET NEW PASSWORD ==
     // =================================================================
-
     @Test
-    fun `register success - should emit Loading and then Success`() = runTest {
+    fun `setNewPassword success - should emit Loading and then Success`() = runTest {
         // ARRANGE
-        val registerRequest = RegisterRequest("New User", "new@example.com", "password123")
+        val email = "test@example.com"
+        val newPassword = "newPassword123"
 
-        // 1. Mock panggilan Firebase untuk membuat user (berhasil)
-        whenever(firebaseAuth.createUserWithEmailAndPassword(registerRequest.email, registerRequest.password))
-            .thenReturn(createUserTask)
-        whenever(createUserTask.isSuccessful).thenReturn(true)
-        whenever(createUserTask.isComplete).thenReturn(true)
-        whenever(createUserTask.result).thenReturn(authResult)
-        whenever(authResult.user).thenReturn(firebaseUser) // Pastikan user tidak null
-
-        // 2. Mock panggilan API ke backend Anda (berhasil)
-        val expectedResponse = BaseResponse("User registered successfully")
+        // 1. Siapkan response sukses dari server
+        val expectedResponse = BaseResponse("Password reset successfully")
         val responseJson = Gson().toJson(expectedResponse)
-        mockWebServer.enqueue(MockResponse().setResponseCode(201).setBody(responseJson))
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(responseJson))
 
         // ACT
-        val results = repository.register(registerRequest).toList()
+        val results = repository.setNewPassword(email, newPassword).toList()
 
         // ASSERT
-        // Verifikasi urutan state: Loading -> Success
+        // Verifikasi alur state
         assertEquals(2, results.size)
         assertTrue(results[0] is ApiResponse.Loading)
         assertTrue(results[1] is ApiResponse.Success)
 
-        // Verifikasi isi data sukses
+        // Verifikasi data response
         val successData = (results[1] as ApiResponse.Success).data
-        assertEquals("User registered successfully", successData.message)
+        assertEquals("Password reset successfully", successData.message)
 
-        // Verifikasi bahwa panggilan ke backend sudah benar
+        // Verifikasi request yang dikirim ke server
         val request = mockWebServer.takeRequest()
-        assertEquals("/api/auth/register", request.path)
+        val requestBody = JSONObject(request.body.readUtf8())
+        assertEquals("/api/auth/set-new-password", request.path)
+        assertEquals(email, requestBody.getString("email"))
+        assertEquals(newPassword, requestBody.getString("new_password"))
     }
 
     @Test
-    fun `register failed - firebase throws UserCollisionException for existing email`() = runTest {
+    fun `setNewPassword failed - api returns error`() = runTest {
         // ARRANGE
-        val registerRequest = RegisterRequest("Existing User", "test@example.com", "password123")
-        val errorMessage = "The email address is already in use by another account."
-        val exception = FirebaseAuthUserCollisionException("ERROR_EMAIL_ALREADY_IN_USE", errorMessage)
+        val email = "test@example.com"
+        val newPassword = "newPassword123"
 
-        // 1. Mock panggilan Firebase (gagal karena email sudah ada)
-        whenever(firebaseAuth.createUserWithEmailAndPassword(registerRequest.email, registerRequest.password))
-            .thenThrow(exception)
+        // 1. Siapkan response error dari server
+        val errorJson = "{\"message\":\"Invalid session or token\"}"
+        mockWebServer.enqueue(MockResponse().setResponseCode(400).setBody(errorJson))
 
         // ACT
-        val results = repository.register(registerRequest).toList()
+        val results = repository.setNewPassword(email, newPassword).toList()
 
         // ASSERT
-        // Verifikasi urutan state: Loading -> Error
         assertEquals(2, results.size)
         assertTrue(results[0] is ApiResponse.Loading)
         assertTrue(results[1] is ApiResponse.Error)
 
-        // Verifikasi pesan error
-        val errorResult = (results[1] as ApiResponse.Error).errorMessage
-        assertEquals(errorMessage, errorResult)
+        val errorData = (results[1] as ApiResponse.Error)
+        assertEquals("Invalid session or token", errorData.errorMessage)
     }
 
 
     // =================================================================
-    // == PENGUJIAN UNTUK LOGIN (SUDAH ADA SEBELUMNYA) ==
+    // == TES LAINNYA (LOGIN, REGISTER, DLL.) ==
     // =================================================================
 
     @Test
+    fun `register success - should emit Loading and then Success`() = runTest {
+        val registerRequest = RegisterRequest("New User", "mindnotfound5@gmail.com", "password123")
+        whenever(firebaseAuth.createUserWithEmailAndPassword(registerRequest.email, registerRequest.password)).thenReturn(createUserTask)
+        whenever(createUserTask.isSuccessful).thenReturn(true)
+        whenever(createUserTask.isComplete).thenReturn(true)
+        whenever(createUserTask.result).thenReturn(authResult)
+        whenever(authResult.user).thenReturn(firebaseUser)
+
+        val expectedResponse = BaseResponse("User registered successfully")
+        mockWebServer.enqueue(MockResponse().setResponseCode(201).setBody(Gson().toJson(expectedResponse)))
+
+        val results = repository.register(registerRequest).toList()
+
+        assertEquals(2, results.size)
+        assertTrue(results[0] is ApiResponse.Loading)
+        assertTrue(results[1] is ApiResponse.Success)
+    }
+
+    @Test
     fun `login success - should emit Loading and then Success`() = runTest {
-        // ARRANGE
         val loginRequest = LoginRequest("test@example.com", "password123")
 
         whenever(firebaseAuth.signInWithEmailAndPassword(loginRequest.email, loginRequest.password)).thenReturn(authResultTask)
         whenever(authResultTask.isSuccessful).thenReturn(true)
         whenever(authResultTask.isComplete).thenReturn(true)
         whenever(authResultTask.result).thenReturn(authResult)
-
         whenever(authResult.user).thenReturn(firebaseUser)
         whenever(firebaseUser.isEmailVerified).thenReturn(true)
         whenever(firebaseUser.getIdToken(true)).thenReturn(idTokenTask)
@@ -155,13 +165,10 @@ class AuthRepositoryTest {
 
         val expectedUser = User("uid123", "Test User", "test@example.com", "email", true)
         val expectedResponse = LoginResponse("Login successful", expectedUser)
-        val responseJson = Gson().toJson(expectedResponse)
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(responseJson))
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(Gson().toJson(expectedResponse)))
 
-        // ACT
         val results = repository.login(loginRequest).toList()
 
-        // ASSERT
         assertEquals(2, results.size)
         assertTrue(results[0] is ApiResponse.Loading)
         assertTrue(results[1] is ApiResponse.Success)

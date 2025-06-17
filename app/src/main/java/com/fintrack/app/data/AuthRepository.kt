@@ -11,7 +11,6 @@ import com.fintrack.app.service.AuthApiService
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.tasks.await
 import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
@@ -21,63 +20,50 @@ import javax.inject.Singleton
 @Singleton
 class AuthRepository @Inject constructor(
     private val apiService: AuthApiService,
-    private val firebaseAuth: FirebaseAuth // Inject FirebaseAuth
+    private val firebaseAuth: FirebaseAuth // FirebaseAuth tetap di-inject untuk fungsi lain
 ) {
 
     /**
-     * Tahap 1: Mendaftarkan pengguna ke Firebase.
-     * Tahap 2: Jika berhasil, panggil backend untuk mengirim OTP verifikasi email.
+     * FIX: Fungsi registrasi sekarang HANYA memanggil backend.
+     * Backend bertanggung jawab penuh untuk membuat user di Firebase dan database.
      */
     fun register(registerRequest: RegisterRequest): Flow<ApiResponse<BaseResponse>> = flow {
         emit(ApiResponse.Loading)
         try {
-            // Tahap 1: Buat user di Firebase Authentication
-            firebaseAuth.createUserWithEmailAndPassword(
-                registerRequest.email,
-                registerRequest.password
-            ).await()
-
-            // Tahap 2: Panggil API backend untuk trigger pengiriman OTP dan menyimpan data user
+            // Langsung panggil API backend untuk registrasi
             val response = apiService.register(registerRequest)
             if (response.isSuccessful && response.body() != null) {
                 emit(ApiResponse.Success(response.body()!!))
             } else {
                 emit(ApiResponse.Error(parseErrorMessage(response.errorBody()?.string(), response.code())))
             }
+        } catch (e: HttpException) {
+            emit(ApiResponse.Error("Gagal terhubung ke server. Kode: ${e.code()}"))
+        } catch (e: IOException) {
+            emit(ApiResponse.Error("Tidak ada koneksi internet. Periksa jaringan Anda."))
         } catch (e: Exception) {
-            emit(ApiResponse.Error(e.message ?: "Terjadi kesalahan saat registrasi."))
+            emit(ApiResponse.Error(e.message ?: "Terjadi kesalahan tidak terduga."))
         }
     }
 
     /**
-     * Tahap 1: Login ke Firebase untuk mendapatkan ID Token.
-     * Tahap 2: Kirim token ke backend untuk verifikasi dan mendapatkan data profil.
+     * Fungsi login sekarang langsung memanggil backend tanpa melalui Firebase.
      */
     fun login(loginRequest: LoginRequest): Flow<ApiResponse<LoginResponse>> = flow {
         emit(ApiResponse.Loading)
         try {
-            val authResult = firebaseAuth.signInWithEmailAndPassword(loginRequest.email, loginRequest.password).await()
-            val firebaseUser = authResult.user ?: throw IOException("Gagal mendapatkan data user dari Firebase.")
-
-            // Periksa apakah email sudah terverifikasi di Firebase
-            if (!firebaseUser.isEmailVerified) {
-                // Backend akan mengirim OTP saat register, jadi di sini kita hanya perlu memberitahu user
-                emit(ApiResponse.Error("Email belum terverifikasi. Silakan cek email Anda untuk kode OTP."))
-                return@flow
-            }
-
-            val token = firebaseUser.getIdToken(true).await().token ?: throw IOException("Gagal mendapatkan Firebase ID Token.")
-
-            // Tahap 2: Panggil API backend `/login` dengan token
-            // FIX: Mengganti handleFirebaseLogin menjadi loginWithToken
-            val response = apiService.login("Bearer $token", loginRequest)
+            val response = apiService.login(loginRequest)
             if (response.isSuccessful && response.body() != null) {
                 emit(ApiResponse.Success(response.body()!!))
             } else {
                 emit(ApiResponse.Error(parseErrorMessage(response.errorBody()?.string(), response.code())))
             }
+        } catch (e: HttpException) {
+            emit(ApiResponse.Error("Gagal terhubung ke server. Kode: ${e.code()}"))
+        } catch (e: IOException) {
+            emit(ApiResponse.Error("Tidak ada koneksi internet. Periksa jaringan Anda."))
         } catch (e: Exception) {
-            emit(ApiResponse.Error(e.message ?: "Login gagal. Periksa kembali email dan password Anda."))
+            emit(ApiResponse.Error(e.message ?: "Terjadi kesalahan tidak terduga."))
         }
     }
 
@@ -100,7 +86,6 @@ class AuthRepository @Inject constructor(
     fun requestPasswordReset(email: String): Flow<ApiResponse<BaseResponse>> = flow {
         emit(ApiResponse.Loading)
         try {
-            // Langsung panggil backend untuk mengirim OTP, sesuai alur di controller
             val response = apiService.requestPasswordReset(mapOf("email" to email))
             if (response.isSuccessful && response.body() != null) {
                 emit(ApiResponse.Success(response.body()!!))
