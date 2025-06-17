@@ -1,24 +1,28 @@
 package com.fintrack.app.ui.profile
 
-import com.fintrack.app.R
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.fintrack.app.R
+import com.fintrack.app.data.SessionManager
 import com.fintrack.app.ui.signin.SignInActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ProfileActivity : AppCompatActivity() {
 
-    private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var googleSignInClient: GoogleSignInClient
+    @Inject lateinit var firebaseAuth: FirebaseAuth
+    @Inject lateinit var sessionManager: SessionManager // Inject SessionManager
 
+    private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var tvUserName: TextView
     private lateinit var tvUserEmail: TextView
     private lateinit var btLogout: Button
@@ -31,32 +35,48 @@ class ProfileActivity : AppCompatActivity() {
         tvUserEmail = findViewById(R.id.tv_user_email)
         btLogout = findViewById(R.id.bt_logout)
 
-        firebaseAuth = FirebaseAuth.getInstance()
+        setupGoogleSignInClient()
+        loadUserProfile()
 
-        // Inisialisasi GoogleSignInClient (wajib untuk logout dari Google juga)
+        btLogout.setOnClickListener {
+            logoutUser()
+        }
+    }
+
+    private fun setupGoogleSignInClient(){
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
+    }
 
-        // Tampilkan informasi user
-        val user: FirebaseUser? = firebaseAuth.currentUser
-        if (user != null) {
-            tvUserName.text = user.displayName ?: "Tidak ada nama"
-            tvUserEmail.text = user.email ?: "Tidak ada email"
+    private fun loadUserProfile() {
+        // Ambil data dari SessionManager
+        val name = sessionManager.getUserName() ?: "Tidak ada nama"
+        val email = sessionManager.getUserEmail() ?: "Tidak ada email"
+
+        tvUserName.text = name
+        tvUserEmail.text = email
+    }
+
+    private fun logoutUser() {
+        firebaseAuth.signOut()
+        googleSignInClient.signOut().addOnCompleteListener {
+            // Gunakan SessionManager untuk membersihkan sesi
+            sessionManager.clearSession()
+
+            displayToast("Logout berhasil")
+            navigateToLogin()
         }
+    }
 
-        btLogout.setOnClickListener {
-            // Sign out dari Firebase dan Google
-            firebaseAuth.signOut()
-            googleSignInClient.signOut().addOnCompleteListener {
-                displayToast("Logout berhasil")
-
-                startActivity(Intent(this, SignInActivity::class.java))
-                finish()
-            }
+    private fun navigateToLogin() {
+        val intent = Intent(this, SignInActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
+        startActivity(intent)
+        finish()
     }
 
     private fun displayToast(message: String) {
