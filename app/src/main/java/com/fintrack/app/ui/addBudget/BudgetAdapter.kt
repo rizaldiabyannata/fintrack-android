@@ -8,12 +8,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.fintrack.app.R
+import java.text.NumberFormat
+import java.util.Locale
 
-class BudgetAdapter(private val anggaranList: List<BudgetItem>) :
+class BudgetAdapter(private val budgetList: List<BudgetItem>) : // Mengganti nama variabel agar lebih jelas
     RecyclerView.Adapter<BudgetAdapter.BudgetViewHolder>() {
 
     class BudgetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // Tambahkan referensi untuk iconBudget
         val iconBudget: ImageView = itemView.findViewById(R.id.iconBudget)
         val textBudget: TextView = itemView.findViewById(R.id.textBudget)
         val totalBudget: TextView = itemView.findViewById(R.id.totalBudget)
@@ -27,19 +28,27 @@ class BudgetAdapter(private val anggaranList: List<BudgetItem>) :
     }
 
     override fun onBindViewHolder(holder: BudgetViewHolder, position: Int) {
-        val currentItem = anggaranList[position]
+        val currentItem = budgetList[position]
 
-        // Atur gambar pada ImageView menggunakan ID resource (Int)
-        holder.iconBudget.setImageResource(currentItem.iconBudget)
-        holder.textBudget.text = currentItem.nama
-        holder.totalBudget.text = currentItem.total
+        // Mengatur icon dari resource ID
+        holder.iconBudget.setImageResource(currentItem.iconResId)
 
+        // Mengatur nama budget
+        holder.textBudget.text = currentItem.name
+
+        // --- PENYESUAIAN 1: Format angka menjadi format mata uang Rupiah ---
+        // Mengubah Int menjadi String dengan format yang benar
+        val formatter = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
+        holder.totalBudget.text = formatter.format(currentItem.amount.toLong())
+
+        // --- PENYESUAIAN 2: Memperbaiki properti yang salah pada Toast ---
         holder.editIconBudget.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "Edit item: ${currentItem.nama}", Toast.LENGTH_SHORT).show()
+            // Menggunakan 'currentItem.name' bukan 'currentItem.nama'
+            Toast.makeText(holder.itemView.context, "Edit item: ${currentItem.name}", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun getItemCount(): Int {
-        return anggaranList.size
+        return budgetList.size
     }
 }

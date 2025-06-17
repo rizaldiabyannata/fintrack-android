@@ -4,57 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:paddingTop="36dp"
+    android:paddingHorizontal="0dp"
+    tools:context=".ui.addBudget.AddBudgetFragment">
 
-    <!-- Toolbar -->
-
-    <!-- Form Input -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/toolbar_tambah_anggaran"
+        android:id="@+id/header_container"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="24dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/button_kembali_tambah_anggaran"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="Kembali"
-            android:padding="8dp"
-            android:src="@drawable/ic_arrow_back"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/arrow_back_24px"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@android:color/black" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/title_tambah_anggaran"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="2.5dp"
+            android:paddingLeft="6dp"
             android:text="Tambah Anggaran"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/button_kembali_tambah_anggaran"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/button_kembali_tambah_anggaran"
             app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
-        android:id="@+id/line_under"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@drawable/line_under"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_tambah_anggaran"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="-24dp"
-        android:layout_marginEnd="-24dp"/>
+        <View
+            android:id="@+id/line_under"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="9.5dp"
+            android:layout_marginStart="-24dp"
+            android:layout_marginEnd="-24dp"
+            android:background="@drawable/line_under"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_kembali_tambah_anggaran" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:id="@+id/scrollview_form"
@@ -63,20 +59,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_tambah_anggaran">
+        app:layout_constraintTop_toBottomOf="@id/header_container">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="24dp">
 
-            <!-- Input Nama Kategori -->
             <TextView
                 android:id="@+id/label_nama_kategori"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Nama Kategori"
-                android:textColor="@android:color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -94,14 +89,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/label_nama_kategori" />
 
-            <!-- Input Jumlah -->
             <TextView
                 android:id="@+id/label_jumlah_anggaran"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="Jumlah Anggaran"
-                android:textColor="@android:color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edittext_nama_kategori" />

@@ -1,62 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:clipChildren="false"
-        android:padding="24dp">
+<!--fragment budget-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:paddingTop="36dp"
+    android:paddingHorizontal="0dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.button.MaterialButton
-            android:layout_marginTop="12dp"
             android:id="@+id/backButtonBudget"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:background="@drawable/arrow_back_24px"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/anggaran"
-            android:layout_marginTop="13.5dp"
-            android:paddingLeft="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tambah Anggaran"
+            android:paddingTop="2.5dp"
+            android:paddingLeft="6dp"
+            android:text="Anggaran"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/backButtonBudget"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:layout_marginTop="12dp"
             android:id="@+id/addBudget"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:background="@drawable/add_24px"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/line_under"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@drawable/line_under"
-            app:layout_constraintTop_toBottomOf="@id/addBudget"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:layout_marginStart="-24dp"
-            android:layout_marginEnd="-24dp"/>
+            android:layout_marginEnd="-24dp"
+            android:background="@drawable/line_under"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addBudget" />
 
+</androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="0dp"  android:layout_height="0dp" android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/line_under"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_container"
         tools:listitem="@layout/item_budget" />
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

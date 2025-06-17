@@ -28,11 +28,11 @@ class BudgetFragment : Fragment() {
 
         // ... kode untuk setup RecyclerView ...
         val dataBudget = listOf(
-            BudgetItem("Belanja Bulanan", "Rp 1.500.000",R.drawable.ic_people),
-            BudgetItem("Transportasi", "Rp 300.000",R.drawable.ic_people),
-            BudgetItem("Cicilan Rumah", "Rp 2.500.000",R.drawable.ic_people),
-            BudgetItem("Dana Darurat", "Rp 500.000",R.drawable.ic_people),
-            BudgetItem("Hiburan", "Rp 450.000",R.drawable.ic_people)
+            BudgetItem("Belanja Bulanan", 1500000, 10.000,R.drawable.ic_people),
+            BudgetItem("Transportasi", 300000,  10.000,R.drawable.ic_people),
+            BudgetItem("Cicilan Rumah", 2500000, 10.000,R.drawable.ic_people),
+            BudgetItem("Dana Darurat", 500000, 10.000,R.drawable.ic_people),
+            BudgetItem("Hiburan", 450000, 10.000,R.drawable.ic_people)
         )
 
         val adapter = BudgetAdapter(dataBudget)
@@ -44,12 +44,13 @@ class BudgetFragment : Fragment() {
             activity?.onBackPressedDispatcher?.onBackPressed()
         }
 
-        // --- UBAH BAGIAN INI ---
         binding.addBudget.setOnClickListener {
-            // Menggunakan NavController untuk berpindah ke AddBudgetFragment
-            // Pastikan ID action ini sama dengan yang ada di file navigation XML
-            findNavController().navigate(R.id.action_budgetFragment_to_addBudgetFragment)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, AddBudgetFragment())
+                .addToBackStack(null) // Menambahkan transaksi ini ke back stack
+                .commit()
         }
+
     }
 
     override fun onDestroyView() {

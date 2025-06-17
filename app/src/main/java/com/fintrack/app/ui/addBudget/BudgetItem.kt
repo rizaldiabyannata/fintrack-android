@@ -1,9 +1,10 @@
 package com.fintrack.app.ui.addBudget
 
-import android.media.Image
+import androidx.annotation.DrawableRes
 
-data class BudgetItem (
-    val nama: String,
-    val total: String,
-    val iconBudget: Int
+data class BudgetItem(
+    val name: String,
+    val amount: Int,
+    val used: Double,
+    @DrawableRes val iconResId: Int
 )
