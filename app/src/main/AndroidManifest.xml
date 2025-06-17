@@ -29,18 +29,18 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.profile.ProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.signup.SignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.otp.OTPVerificationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.resetPassword.ResetPasswordActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".ui.profile.ProfileActivity"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".ui.signup.SignUpActivity"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".ui.otp.OTPVerificationActivity"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".ui.resetPassword.ResetPasswordActivity"-->
+<!--            android:exported="false" />-->
 
         <!-- NavigationActivity -->
 <!--        <activity-->
