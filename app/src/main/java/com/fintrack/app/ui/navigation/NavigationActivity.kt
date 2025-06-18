@@ -3,7 +3,7 @@ package com.fintrack.app.ui.navigation
 import LainnyaFragment
 import StatistikFragment
 //import com.fintrack.app.ui.transaction.TransaksiFragment
-import com.fintrack.app.ui.addBudget.BudgetFragment
+import com.fintrack.app.ui.budget.BudgetFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.fintrack.app.R

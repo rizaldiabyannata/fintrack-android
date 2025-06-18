@@ -1,4 +1,4 @@
-package com.fintrack.app.ui.addBudget
+package com.fintrack.app.ui.budget
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +8,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.fintrack.app.R
+import com.fintrack.app.ui.budget.BudgetItem // Pastikan import ini benar (sudah ada di atas)
 import java.text.NumberFormat
 import java.util.Locale
 
-class BudgetAdapter(private val budgetList: List<BudgetItem>) : // Mengganti nama variabel agar lebih jelas
+class BudgetAdapter(private var budgetList: List<BudgetItem>) :
     RecyclerView.Adapter<BudgetAdapter.BudgetViewHolder>() {
 
     class BudgetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -30,25 +31,23 @@ class BudgetAdapter(private val budgetList: List<BudgetItem>) : // Mengganti nam
     override fun onBindViewHolder(holder: BudgetViewHolder, position: Int) {
         val currentItem = budgetList[position]
 
-        // Mengatur icon dari resource ID
         holder.iconBudget.setImageResource(currentItem.iconResId)
-
-        // Mengatur nama budget
         holder.textBudget.text = currentItem.name
 
-        // --- PENYESUAIAN 1: Format angka menjadi format mata uang Rupiah ---
-        // Mengubah Int menjadi String dengan format yang benar
         val formatter = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
         holder.totalBudget.text = formatter.format(currentItem.amount.toLong())
 
-        // --- PENYESUAIAN 2: Memperbaiki properti yang salah pada Toast ---
         holder.editIconBudget.setOnClickListener {
-            // Menggunakan 'currentItem.name' bukan 'currentItem.nama'
             Toast.makeText(holder.itemView.context, "Edit item: ${currentItem.name}", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun getItemCount(): Int {
         return budgetList.size
+    }
+
+    fun updateData(newBudgetList: List<BudgetItem>) {
+        budgetList = newBudgetList
+        notifyDataSetChanged()
     }
 }

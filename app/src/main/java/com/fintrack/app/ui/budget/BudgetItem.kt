@@ -1,4 +1,4 @@
-package com.fintrack.app.ui.addBudget
+package com.fintrack.app.ui.budget
 
 import androidx.annotation.DrawableRes
 

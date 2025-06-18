@@ -3,6 +3,7 @@ package com.fintrack.app.module
 import android.content.Context
 import android.content.SharedPreferences
 import com.fintrack.app.service.AuthApiService
+import com.fintrack.app.service.BudgetApiService
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -21,7 +22,7 @@ import javax.inject.Singleton
 object NetworkModule {
 
     private const val PREFS_NAME = "user_prefs"
-    private const val BASE_URL = "http://18.14.179.208:3000/"
+    private const val BASE_URL = "http://198.168.1.9:3000/"
 
     @Provides
     @Singleton
@@ -49,6 +50,12 @@ object NetworkModule {
     @Singleton
     fun provideAuthApiService(retrofit: Retrofit): AuthApiService {
         return retrofit.create(AuthApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBudgetApiService(retrofit: Retrofit): BudgetApiService {
+        return retrofit.create(BudgetApiService::class.java)
     }
 
     @Provides

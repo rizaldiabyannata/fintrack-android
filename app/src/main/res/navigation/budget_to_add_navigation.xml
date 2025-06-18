@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/budgetFragment"
-        android:name="com.fintrack.app.ui.addBudget.BudgetFragment"
+        android:name="com.fintrack.app.ui.budget.BudgetFragment"
         android:label="fragment_budget"
         tools:layout="@layout/fragment_budget" >
 
