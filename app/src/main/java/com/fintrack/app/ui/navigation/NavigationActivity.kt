@@ -8,7 +8,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.fintrack.app.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NavigationActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView

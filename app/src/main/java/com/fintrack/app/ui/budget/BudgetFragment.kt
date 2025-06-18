@@ -72,45 +72,42 @@ class BudgetFragment : Fragment() {
     }
 
     private fun fetchDataDirectly() {
-        // Menggunakan Coroutine Scope yang terikat pada lifecycle Fragment
         viewLifecycleOwner.lifecycleScope.launch {
             budgetRepository.getAllBudget().collectLatest { apiResponse ->
-                // binding.progressBar.isVisible = apiResponse is ApiResponse.Loading
                 binding.recyclerView.isVisible = apiResponse is ApiResponse.Success
 
                 when(apiResponse) {
                     is ApiResponse.Success -> {
-                        // **FIXED**: Menggunakan nama properti yang benar dari data class response
-                        val uiItems = apiResponse.data.getAllBudgetResponse?.mapNotNull { networkItem ->
-                            // Pastikan networkItem tidak null
+                        // The 'data' property is now the list itself
+                        val uiItems = apiResponse.data.mapNotNull { networkItem ->
                             networkItem?.let {
                                 BudgetItem(
-                                    // **FIXED**: Menggunakan 'category' sebagai nama dan 'amountLimit' sebagai jumlah
-                                    name = it.category ?: "Tanpa Kategori",
+                                    // Access the 'name' from the nested category object
+                                    name = it.category?.name ?: "Tanpa Kategori",
                                     amount = it.amountLimit ?: 0,
-                                    used = 0.0, // Nilai default
-                                    iconResId = mapCategoryToIcon(it.category)
+                                    used = 0.0,
+                                    // Pass the category name to the icon mapper
+                                    iconResId = mapCategoryToIcon(it.category?.name)
                                 )
                             }
-                        } ?: emptyList()
-
+                        }
                         budgetAdapter.updateData(uiItems)
                     }
                     is ApiResponse.Error -> {
-                        // Menampilkan pesan error
                         Toast.makeText(context, apiResponse.errorMessage, Toast.LENGTH_LONG).show()
                     }
                     is ApiResponse.Loading -> {
-                        // State loading ditangani oleh ProgressBar
+                        // Handle loading state if you have a progress bar
                     }
                 }
             }
         }
     }
 
-    private fun mapCategoryToIcon(category: String?): Int {
-        return when (category?.lowercase()) {
-            "makanan", "belanja", "belanja bulanan" -> R.drawable.ic_people
+    // Update the function signature to accept the category name
+    private fun mapCategoryToIcon(categoryName: String?): Int {
+        return when (categoryName?.lowercase()) {
+            "makanan", "belanja", "belanja bulanan", "ngentot" -> R.drawable.ic_people // Added new category
             "transportasi" -> R.drawable.ic_people
             "cicilan rumah", "tagihan" -> R.drawable.ic_people
             "hiburan" -> R.drawable.ic_people

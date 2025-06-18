@@ -19,8 +19,9 @@ data class GetAllBudgetResponseItem(
     @field:SerializedName("_id")
     val id: String? = null,
 
+    // CHANGE THE TYPE OF THE category PROPERTY
     @field:SerializedName("category")
-    val category: String? = null,
+    val category: Category? = null,
 
     @field:SerializedName("userId")
     val userId: String? = null,
@@ -30,4 +31,13 @@ data class GetAllBudgetResponseItem(
 
     @field:SerializedName("updatedAt")
     val updatedAt: String? = null
+)
+
+// ADD THIS NESTED CLASS DEFINITION
+data class Category(
+    @SerializedName("_id")
+    val id: String?,
+
+    @SerializedName("name")
+    val name: String?
 )
