@@ -102,7 +102,6 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     kapt("com.google.dagger:hilt-compiler:2.51.1")
 
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
