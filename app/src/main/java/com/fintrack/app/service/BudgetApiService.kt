@@ -1,16 +1,53 @@
 package com.fintrack.app.service
 
-import com.fintrack.app.data.response.GetAllBudgetResponseItem
-import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.GET
-
+import com.fintrack.app.data.BudgetPayload
+import com.fintrack.app.data.BudgetMonthlyResponse
+import com.fintrack.app.data.BudgetResponse
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.http.*
 
 interface BudgetApiService {
+
+    // Ambil semua budget user
     @GET("api/budget")
-    suspend fun getAllBudget(
-        @Header("Authorization") token: String = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NGY3YjA2OWM0MjRjODk5MjRmZmZlMyIsImVtYWlsIjoibWluZG5vdGZvdW5kNUBnbWFpbC5jb20iLCJpYXQiOjE3NTAyNTA4MjksImV4cCI6MTc1MDI1NDQyOX0.amWsMGNpGR-z5-Vox9VSu29xaKZu1gKFnhI3njz2_TQ"
-    ): Response<List<GetAllBudgetResponseItem>>
+    fun getAllBudgets(
+        @Header("Authorization") authHeader: String
+    ): Call<List<BudgetResponse>>
+
+    // Ambil budget spesifik bulan
+    @GET("api/budget/monthly")
+    fun getBudgetMonthly(
+        @Header("Authorization") authHeader: String,
+        @Query("month") month: String // Format: "2025-06-01"
+    ): Call<BudgetMonthlyResponse>
+
+    // Ambil satu budget berdasarkan ID
+    @GET("api/budget/{id}")
+    fun getBudgetById(
+        @Header("Authorization") authHeader: String,
+        @Path("id") id: String
+    ): Call<BudgetResponse>
+
+    // Tambah budget
+    @POST("api/budget")
+    fun createBudget(
+        @Header("Authorization") authHeader: String,
+        @Body payload: BudgetPayload
+    ): Call<ResponseBody>
+
+    // Update budget
+    @PUT("api/budget/{id}")
+    fun updateBudget(
+        @Header("Authorization") authHeader: String,
+        @Path("id") id: String,
+        @Body payload: BudgetPayload
+    ): Call<ResponseBody>
+
+    // Hapus budget
+    @DELETE("api/budget/{id}")
+    fun deleteBudget(
+        @Header("Authorization") authHeader: String,
+        @Path("id") id: String
+    ): Call<ResponseBody>
 }
