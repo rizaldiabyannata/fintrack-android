@@ -1,7 +1,7 @@
 package com.fintrack.app.ui.navigation
 
-import LainnyaFragment
-import StatistikFragment
+import com.fintrack.app.ui.LainnyaFragment
+import com.fintrack.app.ui.statistik.StatistikFragment
 //import com.fintrack.app.ui.transaction.TransaksiFragment
 import com.fintrack.app.ui.budget.BudgetFragment
 import android.os.Bundle

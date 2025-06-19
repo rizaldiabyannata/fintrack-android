@@ -19,7 +19,7 @@ class BudgetRepository @Inject constructor(
     fun getAllBudget(): Flow<ApiResponse<List<GetAllBudgetResponseItem>>> = flow {
         emit(ApiResponse.Loading)
         try {
-            val response = apiService.getAllBudget()
+            val response = apiService.getAllBudgets("Bearer ")
 
             if (response.isSuccessful && response.body() != null) {
                 // The body is now a List, which is what we want
