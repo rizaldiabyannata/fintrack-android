@@ -1,6 +1,6 @@
 package com.fintrack.app.service
 
-import com.fintrack.app.data.TransactionPayload
+import com.fintrack.app.data.request.TransactionPayload
 import com.fintrack.app.data.TransactionResponse
 import okhttp3.ResponseBody
 import retrofit2.Call

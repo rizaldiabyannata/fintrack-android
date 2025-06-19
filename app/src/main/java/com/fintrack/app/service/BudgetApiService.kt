@@ -1,8 +1,8 @@
 package com.fintrack.app.service
 
-import com.fintrack.app.data.BudgetPayload
-import com.fintrack.app.data.BudgetMonthlyResponse
-import com.fintrack.app.data.BudgetResponse
+import com.fintrack.app.data.request.BudgetPayload
+import com.fintrack.app.data.response.BudgetMonthlyResponse
+import com.fintrack.app.data.response.BudgetResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*

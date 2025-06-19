@@ -1,7 +1,7 @@
 package com.fintrack.app.service
 
-import com.fintrack.app.data.CategoryPayload
-import com.fintrack.app.data.CategoryResponse
+import com.fintrack.app.data.request.CategoryPayload
+import com.fintrack.app.data.response.CategoryResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*

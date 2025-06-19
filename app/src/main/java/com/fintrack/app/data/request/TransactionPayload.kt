@@ -1,4 +1,4 @@
-package com.fintrack.app.data
+package com.fintrack.app.data.request
 
 data class TransactionPayload(
     val category: String,

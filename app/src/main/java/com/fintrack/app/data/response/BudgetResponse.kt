@@ -1,4 +1,4 @@
-package com.fintrack.app.data
+package com.fintrack.app.data.response
 
 data class BudgetResponse(
     val _id: String,
