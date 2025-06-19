@@ -1,7 +1,7 @@
 //package com.fintrack.app.ui.navigation
 //
 //import LainnyaFragment
-//import StatistikFragment
+//import com.fintrack.app.ui.statistik.StatistikFragment
 //import com.fintrack.app.ui.transaction.TransaksiFragment
 //import android.os.Bundle
 //import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +33,7 @@
 //                }
 //                R.id.nav_statistik -> {
 //                    supportFragmentManager.beginTransaction()
-//                        .replace(R.id.fragment_container, StatistikFragment())
+//                        .replace(R.id.fragment_container, com.fintrack.app.ui.statistik.StatistikFragment())
 //                        .commit()
 //                    true
 //                }

@@ -1,22 +1,23 @@
+package com.fintrack.app.ui.statistik
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.fintrack.app.R
-import com.fintrack.app.ui.StatistikTabAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import android.widget.PopupMenu
-
 
 class StatistikFragment : Fragment() {
+
     private lateinit var txtMonthYear: TextView
     private lateinit var btnPrevMonth: ImageButton
     private lateinit var btnNextMonth: ImageButton
@@ -41,6 +42,7 @@ class StatistikFragment : Fragment() {
         btnNextMonth = view.findViewById(R.id.btn_next_month)
         txtWaktu = view.findViewById(R.id.txt_waktu)
         btnDropdown = view.findViewById(R.id.btn_dropdown)
+
         tabLayout = view.findViewById(R.id.tabStatistik)
         viewPager = view.findViewById(R.id.viewPagerStatistik)
 
@@ -52,6 +54,7 @@ class StatistikFragment : Fragment() {
             tab.text = tabTitles[position]
         }.attach()
 
+        txtWaktu.text = mode
         updateMonthYearText()
 
         btnPrevMonth.setOnClickListener {
@@ -78,7 +81,6 @@ class StatistikFragment : Fragment() {
             val popup = PopupMenu(requireContext(), btnDropdown)
             popup.menuInflater.inflate(R.menu.menu_waktu, popup.menu)
             popup.setOnMenuItemClickListener { item ->
-                // logic statik bulanan atau tahunan
                 when (item.itemId) {
                     R.id.menu_bulanan -> {
                         mode = "Bulanan"
@@ -87,6 +89,7 @@ class StatistikFragment : Fragment() {
                         refreshAdapter()
                         true
                     }
+
                     R.id.menu_tahunan -> {
                         mode = "Tahunan"
                         txtWaktu.text = "Tahunan"
@@ -94,6 +97,7 @@ class StatistikFragment : Fragment() {
                         refreshAdapter()
                         true
                     }
+
                     else -> false
                 }
             }
@@ -115,5 +119,4 @@ class StatistikFragment : Fragment() {
     private fun refreshAdapter() {
         adapter.update(calendar, mode)
     }
-
 }

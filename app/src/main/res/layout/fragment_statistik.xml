@@ -34,7 +34,7 @@
                 android:id="@+id/txt_month_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Apr 2020"
+                android:text=""
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:paddingHorizontal="8dp" />
@@ -60,7 +60,7 @@
                 android:id="@+id/txt_waktu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bulanan"
+                android:text=""
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:paddingHorizontal="8dp" />
