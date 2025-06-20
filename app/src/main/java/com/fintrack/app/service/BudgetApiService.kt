@@ -1,8 +1,10 @@
 package com.fintrack.app.service
 
 import com.fintrack.app.data.request.BudgetPayload
+import com.fintrack.app.data.response.BaseResponse
 import com.fintrack.app.data.response.BudgetMonthlyResponse
-import com.fintrack.app.data.response.BudgetResponse
+import com.fintrack.app.data.response.GetAllBudgetResponse
+import com.fintrack.app.data.response.GetByIdBudgetResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -13,7 +15,7 @@ interface BudgetApiService {
     @GET("api/budget")
     fun getAllBudgets(
         @Header("Authorization") authHeader: String
-    ): Call<List<BudgetResponse>>
+    ): Call<List<GetAllBudgetResponse>>
 
     // Ambil budget spesifik bulan
     @GET("api/budget/monthly")
@@ -27,14 +29,14 @@ interface BudgetApiService {
     fun getBudgetById(
         @Header("Authorization") authHeader: String,
         @Path("id") id: String
-    ): Call<BudgetResponse>
+    ): Call<GetByIdBudgetResponse>
 
     // Tambah budget
     @POST("api/budget")
     fun createBudget(
         @Header("Authorization") authHeader: String,
         @Body payload: BudgetPayload
-    ): Call<ResponseBody>
+    ): Call<BaseResponse>
 
     // Update budget
     @PUT("api/budget/{id}")
@@ -42,12 +44,12 @@ interface BudgetApiService {
         @Header("Authorization") authHeader: String,
         @Path("id") id: String,
         @Body payload: BudgetPayload
-    ): Call<ResponseBody>
+    ): Call<BaseResponse>
 
     // Hapus budget
     @DELETE("api/budget/{id}")
     fun deleteBudget(
         @Header("Authorization") authHeader: String,
         @Path("id") id: String
-    ): Call<ResponseBody>
+    ): Call<BaseResponse>
 }
