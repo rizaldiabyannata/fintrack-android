@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Fintrack</string>
+    <string name="default_web_client_id">974829450251-pbtrmqt6jhks8brrbvtok3iee6sadiks.apps.googleusercontent.com</string>
+    <string name="signInDescription">It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum.</string>
+    <string name="sign_in">Sign In</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="otp_description">Enter the OTP code we just sent you on your registered Email/Phone number</string>
+    <string name="internet">Internet</string>
+    <string name="assets">Aset</string>
+    <string name="categories">Categories</string>
+    <string name="budget">Budget</string>
+    <string name="food">Food</string>
+    <string name="daily_life">Daily Life</string>
+    <string name="back_button_desc">Kembali</string>
+    <string name="anggaran_title">Anggaran</string>
+    <string name="tambah_anggaran_title">Tambah Anggaran</string>
+
+
+</resources>

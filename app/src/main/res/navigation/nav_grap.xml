@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/tabTutupBukuFragment"> <fragment
+    android:id="@+id/tabTutupBukuFragment"
+    android:name="com.fintrack.app.ui.transaction.TabTutupBukuFragment"
+    android:label="@string/anggaran_title"
+    tools:layout="@layout/fragment_tab_tutup_buku" >
+
+    <action
+        android:id="@+id/action_tabTutupBukuFragment_to_tambahAnggaranFragment"
+        app:destination="@id/tambahAnggaranFragment" />
+    <action
+        android:id="@+id/action_tabTutupBukuFragment_to_anggaranBaruFragment"
+        app:destination="@id/anggaranBaruFragment" />
+</fragment>
+
+    <fragment
+        android:id="@+id/tambahAnggaranFragment"
+        android:name="com.fintrack.app.ui.transaksi.TambahAnggaranFragment"
+        android:label="@string/tambah_anggaran_title"
+        tools:layout="@layout/fragment_tambah_anggaran">
+
+        <action
+            android:id="@+id/action_tambahAnggaranFragment_to_anggaranBaruFragment"
+            app:destination="@id/anggaranBaruFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/anggaranBaruFragment"
+        android:name="com.fintrack.app.ui.transaction.AnggaranBaruFragment" android:label="@string/tambah_anggaran_title"
+        tools:layout="@layout/fragment_anggaran_baru" />
+
+</navigation>
