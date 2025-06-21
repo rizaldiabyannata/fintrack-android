@@ -19,33 +19,17 @@ class TabHarianFragment : Fragment(R.layout.fragment_tab_harian) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inisialisasi RecyclerView dan Tombol Tambah
         recyclerView = view.findViewById(R.id.recyclerViewHarian)
-        val btnTambah: ImageButton = view.findViewById(R.id.btnTambahHarian)
-
         setupRecyclerView()
-
-        // Setup listener untuk tombol tambah
-        btnTambah.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, AddTransactionFragment())
-                .addToBackStack(null)
-                .commit()
-        }
     }
 
     private fun setupRecyclerView() {
-        adapter = HarianAdapter(emptyList()) // Mulai dengan list kosong
+        adapter = HarianAdapter(emptyList())
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
     }
 
-    /**
-     * Fungsi publik untuk menerima data dari pa    rent fragment (TransaksiFragment).
-     * @param data List data RangkumanHarian yang sudah diproses.
-     */
     fun submitHarianData(data: List<RangkumanHarian>) {
-        // Memastikan adapter sudah diinisialisasi sebelum digunakan
         if (::adapter.isInitialized) {
             adapter.updateData(data)
         }

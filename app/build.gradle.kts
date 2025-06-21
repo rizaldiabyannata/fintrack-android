@@ -96,6 +96,7 @@ dependencies {
     // Chart and graph library
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     // Dagger - Hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -110,4 +111,5 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.11.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
+
 }

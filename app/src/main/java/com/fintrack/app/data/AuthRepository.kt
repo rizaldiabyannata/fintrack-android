@@ -23,10 +23,6 @@ class AuthRepository @Inject constructor(
     private val firebaseAuth: FirebaseAuth // FirebaseAuth tetap di-inject untuk fungsi lain
 ) {
 
-    /**
-     * FIX: Fungsi registrasi sekarang HANYA memanggil backend.
-     * Backend bertanggung jawab penuh untuk membuat user di Firebase dan database.
-     */
     fun register(registerRequest: RegisterRequest): Flow<ApiResponse<BaseResponse>> = flow {
         emit(ApiResponse.Loading)
         try {

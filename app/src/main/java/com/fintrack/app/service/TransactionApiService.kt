@@ -1,20 +1,20 @@
 package com.fintrack.app.service
 
+import com.fintrack.app.data.request.CreateTransactionRequest
 import com.fintrack.app.data.request.TransactionPayload
 import com.fintrack.app.data.response.BaseResponse
 import com.fintrack.app.data.response.DailySummaryResponse
 import com.fintrack.app.data.response.GetAllTransactionsResponse
 import com.fintrack.app.data.response.GetTransactionsResponseItem
-import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
 
 interface TransactionApiService {
 
     @POST("api/transaction")
-    fun createTransaction(
+    suspend fun createTransaction(
         @Header("Authorization") authHeader: String,
-        @Body payload: TransactionPayload
+        @Body payload: CreateTransactionRequest
     ): Response<BaseResponse>
 
     @GET("api/transaction")
@@ -26,20 +26,20 @@ interface TransactionApiService {
 
 
     @GET("api/transaction/{id}")
-    fun getTransactionById(
+    suspend fun getTransactionById(
         @Header("Authorization") authHeader: String,
         @Path("id") id: String
     ): Response<GetTransactionsResponseItem>
 
     @PUT("api/transaction/{id}")
-    fun updateTransaction(
+    suspend fun updateTransaction(
         @Header("Authorization") authHeader: String,
         @Path("id") id: String,
         @Body payload: TransactionPayload
     ): Response<BaseResponse>
 
     @DELETE("api/transaction/{id}")
-    fun deleteTransaction(
+    suspend fun deleteTransaction(
         @Header("Authorization") authHeader: String,
         @Path("id") id: String
     ): Response<BaseResponse>

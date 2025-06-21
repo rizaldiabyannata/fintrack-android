@@ -1,135 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/month_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardBackgroundColor="#F9F9F9"
+    app:cardElevation="4dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardBackgroundColor="#FFFFFF"
+    app:strokeColor="#E0E0E0"
+    app:strokeWidth="1dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_month"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:lineSpacingExtra="0dp"
-            android:text="Jan"
-            android:textColor="#000000"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:padding="16dp"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
 
-        <TextView
-            android:id="@+id/tv_year"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Juni"
+                android:textColor="#000000"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:includeFontPadding="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="2025"
+                android:textColor="#757575"
+                android:textSize="12sp"
+                android:includeFontPadding="false"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_month"
+                app:layout_constraintStart_toEndOf="@id/tv_month" />
+
+            <TextView
+                android:id="@+id/tv_income"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:text="Rp. 0,00"
+                android:textColor="#4285F4"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_expense"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_expense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp. 0,00"
+                android:textColor="#F44336"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/expandable_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:includeFontPadding="false"
-            android:text="2025"
-            android:textColor="#757575"
-            android:textSize="16sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_month"
-            app:layout_constraintStart_toEndOf="@id/tv_month" />
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:background="#F5F5F5">
 
-        <TextView
-            android:id="@+id/tv_income"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:text="Rp. 0,00"
-            android:textColor="#4285F4"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_expense"
-            app:layout_constraintTop_toTopOf="parent" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E0E0" />
 
-        <TextView
-            android:id="@+id/tv_expense"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rp. 0,00"
-            android:textColor="#F44336"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TableLayout
-        android:id="@+id/table_detail_bulanan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/darkerWhite"
-        android:stretchColumns="*"
-        android:visibility="gone">
-
-
-        <!-- Header -->
-        <TableRow>
-
-            <TextView
-                android:layout_width="0dp"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_details"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="6dp"
-                android:text="Tanggal"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:nestedScrollingEnabled="false"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"/>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="6dp"
-                android:text="Masuk"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="6dp"
-                android:text="Keluar"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <!-- Contoh Baris -->
-        <TableRow>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="6dp"
-                android:text="1" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="6dp"
-                android:text="Rp. 1.000.000.000.000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="6dp"
-                android:text="Rp. 200.000.000" />
-        </TableRow>
-    </TableLayout>
+        </LinearLayout>
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

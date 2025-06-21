@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/transaction_to_add_navigation">
+
+    <fragment
+        android:id="@+id/budgetFragment"
+        android:name="com.fintrack.app.ui.transaction.TabHarianFragment"
+        android:label="fragment_budget"
+        tools:layout="@layout/fragment_tab_harian" >
+
+        <action
+            android:id="@+id/action_TransaksiFragment_to_addTransactionFragment"
+            app:destination="@id/addTransactionFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/addTransactionFragment"
+        android:name="com.fintrack.app.ui.transaction.AddTransactionFragment"
+        android:label="fragment_add_budget"
+        tools:layout="@layout/fragment_add_transaction" />
+
+</navigation>

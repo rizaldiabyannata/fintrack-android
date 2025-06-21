@@ -1,42 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_navigation"
-    app:startDestination="@id/transaksiFragment">
-
-    <fragment
-        android:id="@+id/transaksiFragment"
-        android:name="com.fintrack.app.ui.transaction.TransaksiFragment"
-        android:label="fragment_transaksi"
-        tools:layout="@layout/fragment_transaksi" >
-        <!-- Pastikan action didefinisikan di dalam fragment sumber -->
-        <action
-            android:id="@+id/action_transaksiFragment_to_addTransactionFragment"
-            app:destination="@id/addTransactionFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/statistikFragment"
-        android:name="com.fintrack.app.ui.statistik.StatistikFragment"
-        android:label="fragment_statistik"
-        tools:layout="@layout/fragment_statistik" />
-    <fragment
-        android:id="@+id/lainnyaFragment"
-        android:name="com.fintrack.app.ui.LainnyaFragment"
-        android:label="fragment_lainnya"
-        tools:layout="@layout/fragment_lainnya" />
-    <fragment
-        android:id="@+id/budgetFragment"
-        android:name="com.fintrack.app.ui.budget.BudgetFragment"
-        android:label="fragment_budget"
-        tools:layout="@layout/fragment_budget" />
-
-    <!-- Pastikan fragment tujuan memiliki ID yang benar -->
-    <fragment
-        android:id="@+id/addTransactionFragment"
-        android:name="com.fintrack.app.ui.transaction.AddTransactionFragment"
-        android:label="fragment_add_transaction"
-        tools:layout="@layout/fragment_add_transaction" />
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:id="@+id/main_navigation">
 
 </navigation>

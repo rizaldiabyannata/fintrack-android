@@ -10,17 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Tombol Plus -->
-    <ImageButton
-        android:id="@+id/btnTambahBulanan"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:background="@drawable/btn_blue_circle"
-        android:contentDescription="Tambah"
-        android:scaleType="centerInside"
-        android:padding="8dp"
-        android:src="@drawable/add_48px"
-        app:tint="@android:color/white" />
+<!--    &lt;!&ndash; Tombol Plus &ndash;&gt;-->
+<!--    <ImageButton-->
+<!--        android:id="@+id/btnTambahBulanan"-->
+<!--        android:layout_width="56dp"-->
+<!--        android:layout_height="56dp"-->
+<!--        android:layout_gravity="bottom|end"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:background="@drawable/btn_blue_circle"-->
+<!--        android:contentDescription="Tambah"-->
+<!--        android:scaleType="centerInside"-->
+<!--        android:padding="8dp"-->
+<!--        android:src="@drawable/add_48px"-->
+<!--        app:tint="@android:color/white" />-->
 </FrameLayout>

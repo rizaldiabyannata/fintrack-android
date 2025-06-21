@@ -46,11 +46,11 @@
                     android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="4dp"
+                    android:includeFontPadding="false"
                     android:text="01/04/25"
                     android:textColor="#757575"
                     android:textSize="12sp"
-                    android:includeFontPadding="false"
                     app:layout_constraintBaseline_toBaselineOf="@id/tv_day"
                     app:layout_constraintStart_toEndOf="@id/tv_day" />
 

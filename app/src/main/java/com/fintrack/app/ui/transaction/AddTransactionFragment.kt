@@ -1,6 +1,7 @@
 package com.fintrack.app.ui.transaction
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -10,12 +11,24 @@ import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.fintrack.app.R
+import com.fintrack.app.data.TransactionRepository
+import com.fintrack.app.data.network.ApiResponse
+import com.fintrack.app.data.request.CreateTransactionRequest
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction) {
+
+    @Inject
+    lateinit var transactionRepository: TransactionRepository
 
     private val calendar = Calendar.getInstance()
     private lateinit var calendarView: CalendarView
@@ -29,14 +42,15 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Inisialisasi semua view dari layout
         initializeViews(view)
 
-        // Atur tanggal yang dipilih saat ini
+        // -- PERUBAHAN DI SINI --
+        // Atur agar tanggal di masa depan tidak bisa dipilih.
+        calendarView.maxDate = System.currentTimeMillis()
+        // ----------------------
+
         updateSelectedDate(calendar.timeInMillis)
 
-        // Setup listener untuk CalendarView
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val selectedCalendar = Calendar.getInstance().apply {
                 set(year, month, dayOfMonth)
@@ -44,17 +58,14 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction) {
             updateSelectedDate(selectedCalendar.timeInMillis)
         }
 
-        // Setup listener untuk pilihan tipe (pendapatan/pengeluaran)
         radioGroupTipe.setOnCheckedChangeListener { _, checkedId ->
             updateCategoryAdapter(checkedId)
         }
 
-        // Setup listener untuk tombol simpan
         btnSimpan.setOnClickListener {
             simpanTransaksi()
         }
 
-        // Panggil untuk pertama kali untuk mengisi adapter kategori
         updateCategoryAdapter(radioGroupTipe.checkedRadioButtonId)
     }
 
@@ -73,38 +84,67 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction) {
     }
 
     private fun updateCategoryAdapter(checkedId: Int) {
-        // Data ini seharusnya datang dari API atau database Anda
         val categories = if (checkedId == R.id.radio_pendapatan) {
             arrayOf("Gaji", "Bonus", "Hadiah", "Investasi", "Lainnya")
-        } else { // Pengeluaran
+        } else {
             arrayOf("Makanan", "Transportasi", "Belanja", "Hiburan", "Tagihan", "Kesehatan", "Lainnya")
         }
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categories)
         autoCompleteKategori.setAdapter(adapter)
-        // Reset pilihan kategori saat tipe berubah
         autoCompleteKategori.setText("", false)
     }
 
     private fun simpanTransaksi() {
         val tipe = if (radioGroupTipe.checkedRadioButtonId == R.id.radio_pendapatan) "income" else "expense"
-        val total = etTotal.text.toString()
+        val totalStr = etTotal.text.toString()
         val kategori = autoCompleteKategori.text.toString()
         val catatan = etCatatan.text.toString()
 
-        // Validasi input sederhana
-        if (selectedDate.isEmpty() || total.isEmpty() || kategori.isEmpty()) {
-            Toast.makeText(context, "Harap lengkapi tipe, tanggal, total, dan kategori.", Toast.LENGTH_SHORT).show()
+        if (totalStr.isEmpty() || kategori.isEmpty()) {
+            Toast.makeText(context, "Total dan Kategori tidak boleh kosong.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Tampilkan data yang akan disimpan (ganti dengan logika API call)
-        val dataToSave = "Tipe: $tipe\nTanggal: $selectedDate\nTotal: $total\nKategori: $kategori\nCatatan: $catatan"
-        Toast.makeText(context, "Menyimpan data:\n$dataToSave", Toast.LENGTH_LONG).show()
+        val totalDouble = totalStr.toDoubleOrNull()
+        if (totalDouble == null) {
+            Toast.makeText(context, "Format isian Total tidak valid.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-        // TODO: Panggil ViewModel atau Repository untuk menyimpan data transaksi ke API
-        // Contoh: viewModel.addTransaction(type, selectedDate, total, kategori, catatan)
+        btnSimpan.isEnabled = false
 
-        // Setelah berhasil, kembali ke halaman sebelumnya
-        // parentFragmentManager.popBackStack()
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateObject: Date = try {
+            sdf.parse(selectedDate) ?: Date()
+        } catch (e: Exception) {
+            Date()
+        }
+
+        val requestPayload = CreateTransactionRequest(
+            type = tipe,
+            category = kategori,
+            amount = totalDouble,
+            description = catatan,
+            date = dateObject
+        )
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            transactionRepository.postCreateTransaction(requestPayload).collect { response ->
+                when (response) {
+                    is ApiResponse.Loading -> {
+                        // Loading state
+                    }
+                    is ApiResponse.Success -> {
+                        Toast.makeText(context, response.data.message, Toast.LENGTH_LONG).show()
+                        parentFragmentManager.popBackStack()
+                    }
+                    is ApiResponse.Error -> {
+                        Toast.makeText(context, "Error: ${response.errorMessage}", Toast.LENGTH_LONG).show()
+                        Log.e("AddTransactionFragment", "Error: ${response.errorMessage}")
+                        btnSimpan.isEnabled = true
+                    }
+                }
+            }
+        }
     }
 }

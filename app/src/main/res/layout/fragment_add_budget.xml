@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
     android:clipChildren="false"
-    android:paddingTop="36dp"
+    android:clipToPadding="false"
     android:paddingHorizontal="0dp"
+    android:paddingTop="36dp"
     tools:context=".ui.addBudget.AddBudgetFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,9 +15,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingHorizontal="24dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_kembali_tambah_anggaran"
@@ -42,10 +42,10 @@
             android:id="@+id/line_under"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="9.5dp"
             android:layout_marginStart="-24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="-24dp"
-            android:background="@drawable/line_under"
+            android:background="@color/primaryGrey"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_kembali_tambah_anggaran" />
@@ -66,66 +66,58 @@
             android:layout_height="wrap_content"
             android:padding="24dp">
 
-            <TextView
-                android:id="@+id/label_nama_kategori"
-                android:layout_width="wrap_content"
+            <!-- Form Nama Kategori with TextInputLayout -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_nama_kategori"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Nama Kategori"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/edittext_nama_kategori"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@android:drawable/editbox_background"
-                android:hint="Contoh: Makanan"
-                android:padding="12dp"
-                android:textSize="16sp"
+                android:hint="Nama Kategori"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/label_nama_kategori" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/label_jumlah_anggaran"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Jumlah Anggaran"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edittext_nama_kategori" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edittext_nama_kategori"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:inputType="textCapWords" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edittext_jumlah_anggaran"
+            <!-- Form Jumlah Anggaran with TextInputLayout -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_jumlah_anggaran"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@android:drawable/editbox_background"
-                android:hint="Contoh: 2000000"
-                android:inputType="number"
-                android:padding="12dp"
-                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:hint="Jumlah Anggaran"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/label_jumlah_anggaran" />
+                app:layout_constraintTop_toBottomOf="@id/til_nama_kategori">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edittext_jumlah_anggaran"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/button_simpan_anggaran"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:backgroundTint="@color/primaryBlue"
                 android:padding="12dp"
                 android:text="Simpan"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edittext_jumlah_anggaran" />
+                app:layout_constraintTop_toBottomOf="@id/til_jumlah_anggaran" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

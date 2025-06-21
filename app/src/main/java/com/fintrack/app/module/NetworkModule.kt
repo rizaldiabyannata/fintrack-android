@@ -71,7 +71,6 @@ object NetworkModule {
         return FirebaseAuth.getInstance()
     }
 
-    // FIX: Menambahkan provider untuk SharedPreferences
     @Provides
     @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
