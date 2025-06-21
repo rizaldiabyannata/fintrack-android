@@ -2,6 +2,7 @@ package com.fintrack.app.service
 
 import com.fintrack.app.data.request.TransactionPayload
 import com.fintrack.app.data.response.BaseResponse
+import com.fintrack.app.data.response.DailySummaryResponse
 import com.fintrack.app.data.response.GetAllTransactionsResponse
 import com.fintrack.app.data.response.GetTransactionsResponseItem
 import okhttp3.ResponseBody
@@ -17,9 +18,12 @@ interface TransactionApiService {
     ): Response<BaseResponse>
 
     @GET("api/transaction")
-    fun getAllTransactions(
-        @Header("Authorization") authHeader: String
-    ): Response<GetAllTransactionsResponse>
+    suspend fun getAllTransactions(
+        @Header("Authorization") token: String,
+        @Query("month") month: Int, // Parameter untuk bulan
+        @Query("year") year: Int    // Parameter untuk tahun
+    ):  Response<List<DailySummaryResponse>>
+
 
     @GET("api/transaction/{id}")
     fun getTransactionById(

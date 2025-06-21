@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="8dp"
-                android:text="Apr 2020"
+                android:text="Jun 2020"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
