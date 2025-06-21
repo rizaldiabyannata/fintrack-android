@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:paddingHorizontal="16dp"
+    android:paddingTop="36dp"
+    >
 
     <!-- Baris atas: Navigasi bulan/tahun & tombol kanan -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/top_bar_container"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="8dp"
-        android:weightSum="1">
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <!-- Navigasi bulan-tahun -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="0.6"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="start|center_vertical">
+            android:layout_weight="0.6"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/btn_prev_month"
@@ -35,10 +40,10 @@
                 android:id="@+id/txt_month_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
                 android:text="Apr 2020"
                 android:textSize="12sp"
-                android:textStyle="bold"
-                android:paddingHorizontal="8dp" />
+                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/btn_next_month"
@@ -52,10 +57,10 @@
         <!-- Tombol Search & Setting -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="0.4"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
+            android:layout_weight="0.4"
+            android:gravity="end"
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/btn_search"
@@ -69,29 +74,36 @@
                 android:id="@+id/btn_setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Pengaturan"
-                android:layout_marginStart="8dp"
                 app:srcCompat="@drawable/tune_24px" />
         </LinearLayout>
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_bar_container"
+        app:tabGravity="fill"
         app:tabIndicatorColor="@color/button_blue"
         app:tabIndicatorHeight="3dp"
-        app:tabTextColor="@color/tab_text_selector"
-        app:tabGravity="fill"
-        app:tabMode="fixed" />
+        app:tabMode="fixed"
+        app:tabTextColor="@color/tab_text_selector" />
 
-    <!-- 3 kartu info dengan ConstraintLayout (dari kode pertama) -->
+    <!-- 3 kartu info -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:id="@+id/info_cards_container"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:padding="4dp">
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout">
 
         <!-- Pendapatan Card (Blue) -->
         <com.google.android.material.card.MaterialCardView
@@ -99,44 +111,43 @@
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginEnd="4dp"
+            app:cardBackgroundColor="#4D6CFF"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="#4D6CFF"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/card_pengeluaran"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintHorizontal_weight="1">
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="6dp">
 
-                <!-- Container LinearLayout untuk kedua TextView -->
                 <LinearLayout
                     android:id="@+id/container_income"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:gravity="start"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/iv_income_icon"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/tv_income_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="0dp"
+                        android:singleLine="true"
                         android:text="3.000.000,00"
                         android:textColor="#FFFFFF"
                         android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:singleLine="true"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="0dp"
-                        android:ellipsize="end" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_income_label"
@@ -145,7 +156,8 @@
                         android:includeFontPadding="false"
                         android:text="Pendapatan"
                         android:textColor="#FFFFFF"
-                        android:textSize="8sp" />
+                        android:textSize="8sp"
+                        tools:ignore="SmallSp" />
                 </LinearLayout>
 
                 <ImageView
@@ -153,10 +165,11 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_chart_down"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:tint="#FFFFFF" />
+                    app:tint="#FFFFFF"
+                    android:contentDescription="Income Icon" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -168,43 +181,42 @@
             android:layout_height="45dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
+            app:cardBackgroundColor="#FF4D4D"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="#FF4D4D"
-            app:layout_constraintStart_toEndOf="@id/card_pendapatan"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/card_total"
-            app:layout_constraintHorizontal_weight="1">
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/card_pendapatan"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="6dp">
 
-                <!-- Container LinearLayout untuk kedua TextView -->
                 <LinearLayout
                     android:id="@+id/container_expense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:gravity="start"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/iv_expense_icon"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/tv_expense_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="0dp"
+                        android:singleLine="true"
                         android:text="3.000.000,00"
                         android:textColor="#FFFFFF"
                         android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:singleLine="true"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="0dp"
-                        android:ellipsize="end" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_expense_label"
@@ -213,7 +225,8 @@
                         android:includeFontPadding="false"
                         android:text="Pengeluaran"
                         android:textColor="#FFFFFF"
-                        android:textSize="8sp" />
+                        android:textSize="8sp"
+                        tools:ignore="SmallSp" />
                 </LinearLayout>
 
                 <ImageView
@@ -221,10 +234,11 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_chart_up"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:tint="#FFFFFF" />
+                    app:tint="#FFFFFF"
+                    android:contentDescription="Expense Icon" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -235,43 +249,42 @@
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginStart="4dp"
+            app:cardBackgroundColor="#424242"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="#424242"
-            app:layout_constraintStart_toEndOf="@id/card_pengeluaran"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1">
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/card_pengeluaran"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="6dp">
 
-                <!-- Container LinearLayout untuk kedua TextView -->
                 <LinearLayout
                     android:id="@+id/container_total"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:gravity="start"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/iv_total_icon"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/tv_total_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="0dp"
+                        android:singleLine="true"
                         android:text="3.000.000,00"
                         android:textColor="#FFFFFF"
                         android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:singleLine="true"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="0dp"
-                        android:ellipsize="end" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_total_label"
@@ -280,7 +293,8 @@
                         android:includeFontPadding="false"
                         android:text="Keseluruhan"
                         android:textColor="#FFFFFF"
-                        android:textSize="8sp" />
+                        android:textSize="8sp"
+                        tools:ignore="SmallSp" />
                 </LinearLayout>
 
                 <ImageView
@@ -288,25 +302,33 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_pie_chart"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:tint="#FFFFFF" />
+                    app:tint="#FFFFFF"
+                    android:contentDescription="Total Icon" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
-        android:layout_width="match_parent"
+        android:id="@+id/divider"
+        android:layout_width="0dp"
         android:layout_height="1dp"
+        android:layout_marginVertical="4dp"
         android:background="@color/darkGrey"
-        android:layout_marginVertical="4dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/info_cards_container" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

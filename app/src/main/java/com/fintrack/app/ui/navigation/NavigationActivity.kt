@@ -7,6 +7,7 @@ import com.fintrack.app.ui.budget.BudgetFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.fintrack.app.R
+import com.fintrack.app.ui.transaction.TransaksiFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,7 +37,7 @@ class NavigationActivity : AppCompatActivity() {
                 }
                 R.id.nav_statistik -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, StatistikFragment())
+                        .replace(R.id.fragment_container, TransaksiFragment())
                         .commit()
                     true
                 }

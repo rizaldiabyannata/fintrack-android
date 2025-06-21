@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fintrack.app.R
 import com.fintrack.app.data.network.ApiResponse // Pastikan Anda mengimpor kelas ApiResponse
 import com.fintrack.app.data.BudgetRepository // Pastikan Anda mengimpor BudgetRepository
-import com.fintrack.app.data.response.GetAllBudgetResponse // Pastikan import ini benar
 import com.fintrack.app.databinding.FragmentBudgetBinding
 import com.fintrack.app.ui.addBudget.AddBudgetFragment
 import com.fintrack.app.ui.budget.BudgetItem
@@ -73,7 +72,7 @@ class BudgetFragment : Fragment() {
 
     private fun fetchDataDirectly() {
         viewLifecycleOwner.lifecycleScope.launch {
-            budgetRepository.getAllBudget().collectLatest { apiResponse ->
+            budgetRepository.getAllBudgets().collectLatest { apiResponse ->
                 binding.recyclerView.isVisible = apiResponse is ApiResponse.Success
 
                 when(apiResponse) {

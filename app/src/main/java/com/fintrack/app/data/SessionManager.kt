@@ -43,6 +43,10 @@ class SessionManager @Inject constructor(private val prefs: SharedPreferences) {
         return prefs.getString(KEY_EMAIL, null)
     }
 
+    fun getToken(): String? {
+        return prefs.getString(TOKEN, null)
+    }
+
     fun isLoggedIn(): Boolean {
         return prefs.getBoolean(KEY_IS_LOGGED_IN, false)
     }
