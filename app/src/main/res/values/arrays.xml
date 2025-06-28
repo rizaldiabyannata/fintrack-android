@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Kategori untuk Pemasukan -->
+    <string-array name="income_categories">
+        <item>Gaji</item>
+        <item>Bonus</item>
+        <item>Hadiah</item>
+        <item>Investasi</item>
+        <item>Penjualan</item>
+        <item>Lainnya</item>
+    </string-array>
+
+    <!-- Kategori untuk Pengeluaran (Telah diperbarui dan dilengkapi) -->
+    <string-array name="expense_categories">
+        <item>Makanan &amp; Minuman</item>
+        <item>Transportasi</item>
+        <item>Belanja</item>
+        <item>Tagihan</item>
+        <item>Hiburan</item>
+        <item>Kesehatan</item>
+        <item>Pendidikan</item>
+        <item>Keluarga</item>
+        <item>Hadiah &amp; Donasi</item>
+        <item>Perawatan Diri</item>
+        <item>Lainnya</item>
+    </string-array>
+</resources>

@@ -3,9 +3,9 @@ package com.fintrack.app.data
 import com.fintrack.app.data.network.ApiResponse
 import com.fintrack.app.data.request.BudgetPayload
 import com.fintrack.app.data.response.BaseResponse
-import com.fintrack.app.data.response.BudgetMonthlyResponse
 import com.fintrack.app.data.response.GetAllBudgetResponse
 import com.fintrack.app.data.response.GetByIdBudgetResponse
+import com.fintrack.app.data.response.GetMonthlyBudgetResponse
 import com.fintrack.app.service.BudgetApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -23,7 +23,7 @@ class BudgetRepository @Inject constructor(
 
     // Helper untuk mendapatkan token dengan prefix "Bearer "
     private fun getAuthToken(): String {
-        val token = sessionManager.getToken() ?: "Bearer "
+        val token = sessionManager.getAccessToken()
         return "Bearer $token"
     }
 
@@ -66,11 +66,7 @@ class BudgetRepository @Inject constructor(
         }
     }
 
-    /**
-     * Mengambil budget bulanan dari API.
-     * @param month String dengan format "YYYY-MM-DD"
-     */
-    fun getBudgetMonthly(month: String): Flow<ApiResponse<BudgetMonthlyResponse>> = flow {
+    fun getBudgetMonthly(month: String): Flow<ApiResponse<GetMonthlyBudgetResponse>> = flow {
         emit(ApiResponse.Loading)
         try {
             val response = apiService.getBudgetMonthly(getAuthToken(), month)
@@ -84,9 +80,6 @@ class BudgetRepository @Inject constructor(
         }
     }
 
-    /**
-     * Mengambil budget berdasarkan ID.
-     */
     fun getBudgetById(id: String): Flow<ApiResponse<GetByIdBudgetResponse>> = flow {
         emit(ApiResponse.Loading)
         try {
@@ -100,10 +93,7 @@ class BudgetRepository @Inject constructor(
             emit(ApiResponse.Error(e.message ?: "Gagal mengambil detail budget."))
         }
     }
-
-    /**
-     * Mengupdate budget berdasarkan ID.
-     */
+    
     fun updateBudget(id: String, payload: BudgetPayload): Flow<ApiResponse<BaseResponse>> = flow {
         emit(ApiResponse.Loading)
         try {

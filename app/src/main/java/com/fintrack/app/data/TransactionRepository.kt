@@ -24,7 +24,7 @@ class TransactionRepository @Inject constructor(
 ) {
 
     private fun getAuthToken(): String {
-        val token = sessionManager.getToken() ?: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NGY3YjA2OWM0MjRjODk5MjRmZmZlMyIsImVtYWlsIjoibWluZG5vdGZvdW5kNUBnbWFpbC5jb20iLCJpYXQiOjE3NTA1MzI3NjEsImV4cCI6MTc1MDYxOTE2MX0.cs9cRbVcgz38FAwQ8i_qWneidCfBYkrr56aPmFWObIc"
+        val token = sessionManager.getAccessToken()
         return "Bearer $token"
     }
 

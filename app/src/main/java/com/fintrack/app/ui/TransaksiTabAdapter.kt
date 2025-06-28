@@ -4,14 +4,14 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.fintrack.app.ui.transaction.TabBulananFragment
 import com.fintrack.app.ui.transaction.TabHarianFragment
-//import com.fintrack.app.ui.transaction.TabTutupBukuFragment
+import com.fintrack.app.ui.closeBook.TabTutupBukuFragment
 
 class TransaksiTabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     private val fragments = listOf(
         TabHarianFragment(),
-        TabBulananFragment()
-//        TabTutupBukuFragment()
+        TabBulananFragment(),
+        TabTutupBukuFragment()
     )
 
     override fun getItemCount(): Int = fragments.size

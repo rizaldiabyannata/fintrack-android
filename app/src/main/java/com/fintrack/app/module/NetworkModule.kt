@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.fintrack.app.service.AuthApiService
 import com.fintrack.app.service.BudgetApiService
+import com.fintrack.app.service.StatisticApiService
 import com.fintrack.app.service.TransactionApiService
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
@@ -63,6 +64,12 @@ object NetworkModule {
     @Singleton
     fun provideTransactionApiService(retrofit: Retrofit): TransactionApiService {
         return retrofit.create(TransactionApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStatisticApiService(retrofit: Retrofit): StatisticApiService {
+        return retrofit.create(StatisticApiService::class.java)
     }
 
     @Provides

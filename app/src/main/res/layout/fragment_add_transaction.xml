@@ -4,32 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
     android:fillViewport="true"
-    android:paddingVertical="36dp"
+    android:paddingTop="24dp"
     tools:context=".ui.addBudget.AddBudgetFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="24dp">
+        android:padding="24dp">
 
         <!-- Header -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_kembali_tambah_anggaran"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@drawable/arrow_back_24px"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/arrow_back_24px"
+            app:iconTint="?attr/colorOnSurface"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/title_tambah_anggaran"
+            app:layout_constraintBottom_toBottomOf="@id/title_tambah_anggaran"/>
 
         <TextView
             android:id="@+id/title_tambah_anggaran"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingTop="2.5dp"
-            android:paddingLeft="6dp"
-            android:text="Tambah Anggaran"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="start"
+            android:text="Tambah Transaksi"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/button_kembali_tambah_anggaran"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,27 +45,25 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
-            android:background="@color/darkGrey"
+            android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_kembali_tambah_anggaran" />
+            app:layout_constraintTop_toBottomOf="@id/title_tambah_anggaran" />
 
 
         <!-- Form Content -->
-        <!-- Label Tipe Transaksi -->
         <TextView
             android:id="@+id/label_tipe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Tipe Transaksi"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
             android:fontFamily="@font/poppins_semibold"
+            android:text="Tipe Transaksi"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/line_under" />
 
-        <!-- Pilihan Tipe (RadioGroup) -->
         <RadioGroup
             android:id="@+id/radiogroup_tipe"
             android:layout_width="0dp"
@@ -74,43 +79,60 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:buttonTint="?attr/colorPrimary"
                 android:checked="true"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Pendapatan" />
+                android:text="Pendapatan"
+                android:textColor="?attr/colorOnSurface" />
 
             <RadioButton
                 android:id="@+id/radio_pengeluaran"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:buttonTint="?attr/colorPrimary"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Pengeluaran" />
+                android:text="Pengeluaran"
+                android:textColor="?attr/colorOnSurface" />
         </RadioGroup>
 
-        <!-- Label Tanggal -->
         <TextView
             android:id="@+id/label_tanggal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Tanggal"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
             android:fontFamily="@font/poppins_semibold"
+            android:text="Tanggal"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/radiogroup_tipe" />
 
-        <!-- CalendarView untuk memilih tanggal -->
-        <CalendarView
-            android:id="@+id/calendar_view_tanggal"
+        <!-- Anda bisa mengganti CalendarView dengan DatePickerDialog untuk UX yang lebih baik -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_tanggal"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:hint="Pilih Tanggal"
+            app:startIconDrawable="@drawable/calendar_month_24px"
+            app:startIconTint="?attr/colorOnSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/label_tanggal" />
+            app:layout_constraintTop_toBottomOf="@id/label_tanggal">
 
-        <!-- Form Total dengan TextInputLayout -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_tanggal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:fontFamily="@font/poppins_regular" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_total"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -120,17 +142,17 @@
             android:hint="Total"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/calendar_view_tanggal">
+            app:layout_constraintTop_toBottomOf="@id/til_tanggal">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edittext_total"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:textColor="?attr/colorOnSurface"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Form Kategori dengan TextInputLayout (Dropdown) -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_kategori"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -147,10 +169,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:inputType="none" />
+                android:inputType="none"
+                android:textColor="?attr/colorOnSurface"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Form Catatan dengan TextInputLayout -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_catatan"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -166,21 +188,19 @@
                 android:id="@+id/edittext_catatan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top"
                 android:fontFamily="@font/poppins_regular"
-                android:minLines="3" />
+                android:gravity="top"
+                android:minLines="3"
+                android:textColor="?attr/colorOnSurface"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Tombol Simpan -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/button_simpan_transaksi"
+            style="@style/BlueButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:padding="12dp"
             android:text="Simpan Transaksi"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/til_catatan" />

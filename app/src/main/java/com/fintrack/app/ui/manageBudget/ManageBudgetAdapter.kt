@@ -1,4 +1,4 @@
-package com.fintrack.app.ui.budget
+package com.fintrack.app.ui.manageBudget
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +8,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.fintrack.app.R
-import com.fintrack.app.ui.budget.BudgetItem // Pastikan import ini benar (sudah ada di atas)
 import java.text.NumberFormat
 import java.util.Locale
 
-class BudgetAdapter(private var budgetList: List<BudgetItem>) :
-    RecyclerView.Adapter<BudgetAdapter.BudgetViewHolder>() {
+class ManageBudgetAdapter(private var budgetList: List<BudgetItem>) :
+    RecyclerView.Adapter<ManageBudgetAdapter.BudgetViewHolder>() {
 
     class BudgetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val iconBudget: ImageView = itemView.findViewById(R.id.iconBudget)

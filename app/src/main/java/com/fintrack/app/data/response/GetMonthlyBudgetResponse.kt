@@ -7,11 +7,11 @@ data class GetMonthlyBudgetResponse(
 	@field:SerializedName("totalBudget")
 	val totalBudget: Int? = null,
 
+	@field:SerializedName("totalExpense")
+	val totalExpense: Int? = null,
+
 	@field:SerializedName("remainingBudgetList")
 	val remainingBudgetList: List<RemainingBudgetListItem?>? = null,
-
-	@field:SerializedName("totalExpense")
-	val totalExpense: Int? = null
 )
 
 data class RemainingBudgetListItem(

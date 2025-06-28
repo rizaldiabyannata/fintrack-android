@@ -4,7 +4,6 @@ import com.fintrack.app.data.network.ApiResponse
 import com.fintrack.app.data.request.LoginRequest
 import com.fintrack.app.data.request.RegisterRequest
 import com.fintrack.app.data.response.BaseResponse
-import com.fintrack.app.data.response.LoginResponse
 import com.fintrack.app.data.response.User
 import com.fintrack.app.service.AuthApiService
 import com.google.android.gms.tasks.Task

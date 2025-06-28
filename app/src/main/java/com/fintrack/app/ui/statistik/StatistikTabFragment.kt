@@ -2,19 +2,29 @@ package com.fintrack.app.ui.statistik
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.*
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.fintrack.app.R
-import com.fintrack.app.data.DummyTransactions
-import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.data.*
-import com.google.android.material.tabs.TabLayout
-import java.text.NumberFormat
+import com.fintrack.app.data.StatisticRepository
+import com.fintrack.app.data.network.ApiResponse
+import com.fintrack.app.data.response.GetStatAllResponse
+import com.fintrack.app.data.response.GetStatWithTypeResponse
+import com.fintrack.app.databinding.FragmentTabStatistikBinding
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class StatistikTabFragment : Fragment() {
 
     companion object {
@@ -23,213 +33,234 @@ class StatistikTabFragment : Fragment() {
         private const val ARG_MODE = "mode"
 
         fun newInstance(type: String, date: Date, mode: String): StatistikTabFragment {
-            val fragment = StatistikTabFragment()
-            val args = Bundle()
-            args.putString(ARG_TYPE, type)
-            args.putLong(ARG_DATE, date.time)
-            args.putString(ARG_MODE, mode)
-            fragment.arguments = args
-            return fragment
+            return StatistikTabFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_TYPE, type)
+                    putLong(ARG_DATE, date.time)
+                    putString(ARG_MODE, mode)
+                }
+            }
         }
     }
 
-    private lateinit var pieChart: PieChart
-    private lateinit var tabChart: TabLayout
-    private lateinit var layoutDetails: LinearLayout
-    private lateinit var txtKosong: TextView
+    // Menggunakan Hilt untuk menginjeksi Repository secara langsung ke Fragment
+    @Inject
+    lateinit var statisticRepository: StatisticRepository
+
+    private var _binding: FragmentTabStatistikBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_tab_statistik, container, false)
-        pieChart = view.findViewById(R.id.piechart)
-        tabChart = view.findViewById(R.id.tabchart)
-        layoutDetails = view.findViewById(R.id.layoutDetails)
-        txtKosong = view.findViewById(R.id.txt_noData)
+        _binding = FragmentTabStatistikBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.recyclerViewDetails.layoutManager = LinearLayoutManager(requireContext())
 
         val type = arguments?.getString(ARG_TYPE)
         val date = arguments?.getLong(ARG_DATE)?.let { Date(it) }
         val mode = arguments?.getString(ARG_MODE)
 
-        setupPieChart(type, date, mode)
-        return view
+        if (date != null && mode != null && type != null) {
+            fetchStatistics(mode, date, type)
+        }
     }
 
-    private fun setupPieChart(type: String?, date: Date?, mode: String?) {
-        val transactions = DummyTransactions.list
-        val context = requireContext()
+    private fun fetchStatistics(mode: String, date: Date, type: String) {
+        // Menggunakan lifecycleScope agar coroutine otomatis berhenti saat Fragment hancur
+        viewLifecycleOwner.lifecycleScope.launch {
+            // Konversi tipe dari UI ("pendapatan") ke tipe API ("income")
+            val apiType = when (type) {
+                "pendapatan" -> "income"
+                "pengeluaran" -> "expense"
+                else -> null // Untuk "keseluruhan"
+            }
 
-        val filtered = transactions.filter {
-            if (mode == "Bulanan") {
-                it.createdAt.month == date?.month && it.createdAt.year == date.year
+            val calendar = Calendar.getInstance().apply { time = date }
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH) + 1
+
+            val dataFlow = if (mode == "Bulanan") {
+                statisticRepository.getMonthlyStats(year, month, apiType)
             } else {
-                it.createdAt.year == date?.year
+                statisticRepository.getYearlyStats(year, apiType)
+            }
+
+            // Mengamati Flow dari Repository
+            dataFlow.collectLatest { response ->
+                when (response) {
+                    is ApiResponse.Loading -> showLoading()
+                    is ApiResponse.Success -> handleSuccessResponse(response.data)
+                    is ApiResponse.Error -> showError(response.errorMessage)
+                }
             }
         }
+    }
+
+    private fun handleSuccessResponse(data: Any?) {
+        when (data) {
+            is GetStatAllResponse -> setupOverallPieChart(data)
+            is GetStatWithTypeResponse -> setupTypedPieChart(data)
+            else -> showError("Tipe data respons tidak valid.")
+        }
+    }
+
+    // Fungsi untuk menampilkan data "keseluruhan" (income vs expense)
+    private fun setupOverallPieChart(data: GetStatAllResponse) {
+        val incomeTotal = data.summary?.totalIncome ?: 0
+        val expenseTotal = data.summary?.totalExpense ?: 0
+
+        if (incomeTotal == 0 && expenseTotal == 0) {
+            showEmptyData()
+            return
+        }
+
+        showDataView()
 
         val entries = mutableListOf<PieEntry>()
-        val labelToColor = mutableMapOf<String, Int>()
-        layoutDetails.removeAllViews()
+        val colors = mutableListOf<Int>()
+        val detailItems = mutableListOf<DetailItem>()
+        val total = incomeTotal + expenseTotal
 
-        val grouped = when (type) {
-            "pendapatan" -> filtered.filter { it.type == "income" }.groupBy { it.categoryId.name }
-            "pengeluaran" -> filtered.filter { it.type == "expense" }.groupBy { it.categoryId.name }
-            else -> null
-        }
-
-        if (!grouped.isNullOrEmpty()) {
-            txtKosong.visibility = View.GONE
-            pieChart.visibility = View.VISIBLE
-            layoutDetails.visibility = View.VISIBLE
-
-            var colorIndex = 0
-            val baseColor = if (type == "pendapatan")
-                ContextCompat.getColor(context, R.color.primaryBlue)
-            else
-                ContextCompat.getColor(context, R.color.primaryRed)
-
-            val generatedColors = generateShades(baseColor, grouped.size)
-
-            val total = grouped.values.flatten().sumOf { it.amount }
-
-            grouped.forEach { (label, items) ->
-                val sum = items.sumOf { it.amount }
-                entries.add(PieEntry(sum.toFloat(), label))
-                val color = generatedColors[colorIndex++ % generatedColors.size]
-                labelToColor[label] = color
-
-                val row = layoutDetailsRow(label, sum, total, color)
-                layoutDetails.addView(row)
-            }
-
-            val dataSet = PieDataSet(entries, "")
-            dataSet.colors = entries.map { labelToColor[it.label] ?: Color.GRAY }
-            dataSet.setDrawValues(false)
-            pieChart.data = PieData(dataSet)
-
-        } else if (grouped != null && grouped.isEmpty()) {
-            // Tidak ada data income/expense
-            txtKosong.visibility = View.VISIBLE
-            pieChart.visibility = View.GONE
-            tabChart.visibility = View.GONE
-            layoutDetails.visibility = View.GONE
-            return
-        } else {
-            // type == keseluruhan
-            val incomeTotal = filtered.filter { it.type == "income" }.sumOf { it.amount }
-            val expenseTotal = filtered.filter { it.type == "expense" }.sumOf { it.amount }
-
-            if (incomeTotal == 0 && expenseTotal == 0) {
-                txtKosong.visibility = View.VISIBLE
-                pieChart.visibility = View.GONE
-                tabChart.visibility = View.GONE
-                layoutDetails.visibility = View.GONE
-                return
-            } else {
-                txtKosong.visibility = View.GONE
-                pieChart.visibility = View.VISIBLE
-                layoutDetails.visibility = View.VISIBLE
-            }
-
+        if (incomeTotal > 0) {
             entries.add(PieEntry(incomeTotal.toFloat(), "Pendapatan"))
+            val color = ContextCompat.getColor(requireContext(), R.color.primaryBlue)
+            colors.add(color)
+            detailItems.add(DetailItem("Pendapatan", incomeTotal, total, color))
+        }
+
+        if (expenseTotal > 0) {
             entries.add(PieEntry(expenseTotal.toFloat(), "Pengeluaran"))
+            val color = ContextCompat.getColor(requireContext(), R.color.primaryRed)
+            colors.add(color)
+            detailItems.add(DetailItem("Pengeluaran", expenseTotal, total, color))
+        }
 
-            val colorIncome = ContextCompat.getColor(context, R.color.primaryBlue)
-            val colorExpense = ContextCompat.getColor(context, R.color.primaryRed)
-            labelToColor["Pendapatan"] = colorIncome
-            labelToColor["Pengeluaran"] = colorExpense
+        detailItems.sortByDescending { it.value }
 
-            entries.forEach {
-                val row = layoutDetailsRow(it.label, it.value.toInt(), incomeTotal + expenseTotal, labelToColor[it.label]!!)
-                layoutDetails.addView(row)
+        updatePieChart(entries, colors)
+        binding.recyclerViewDetails.adapter = ItemDetailAdapter(detailItems)
+    }
+
+    /**
+     * --- FUNGSI YANG DIPERBAIKI ---
+     * Fungsi ini sekarang akan menampilkan rincian berdasarkan nama kategori,
+     * bukan lagi berdasarkan tipe grup kategori.
+     */
+    private fun setupTypedPieChart(response: GetStatWithTypeResponse) {
+        val type = arguments?.getString(ARG_TYPE) ?: "pengeluaran"
+
+        // Menggabungkan semua rincian kategori dari setiap grup menjadi satu list
+        val allCategoryDetails = response.data?.breakdownByType?.flatMap { group ->
+            group?.details?.filterNotNull() ?: emptyList()
+        }
+
+        if (allCategoryDetails.isNullOrEmpty()) {
+            showEmptyData()
+            return
+        }
+
+        showDataView()
+
+        val entries = mutableListOf<PieEntry>()
+        val detailItemsForAdapter = mutableListOf<DetailItem>()
+
+        // Total keseluruhan adalah jumlah dari semua kategori.
+        val grandTotal = allCategoryDetails.sumOf { it.totalAmount ?: 0 }
+
+        val baseColor = if (type == "pendapatan")
+            ContextCompat.getColor(requireContext(), R.color.primaryBlue)
+        else
+            ContextCompat.getColor(requireContext(), R.color.primaryRed)
+
+        val colors = generateShades(baseColor, allCategoryDetails.size)
+
+        // Iterasi melalui setiap kategori untuk membuat pie slice dan item list
+        allCategoryDetails.sortedByDescending { it.totalAmount }.forEachIndexed { index, category ->
+            if (category.totalAmount != null && category.totalAmount > 0) {
+                val label = category.categoryName ?: "Lainnya"
+                entries.add(PieEntry(category.totalAmount.toFloat(), label))
+
+                // Buat DetailItem untuk RecyclerView
+                detailItemsForAdapter.add(
+                    DetailItem(
+                        label = label,
+                        value = category.totalAmount,
+                        total = grandTotal, // Gunakan total keseluruhan untuk persentase
+                        color = colors[index % colors.size]
+                    )
+                )
             }
-
-            val dataSet = PieDataSet(entries, "")
-            dataSet.colors = listOf(colorIncome, colorExpense)
-            dataSet.setDrawValues(false)
-            pieChart.data = PieData(dataSet)
         }
 
-        pieChart.description.isEnabled = false
-        pieChart.isDrawHoleEnabled = false
-        pieChart.legend.isEnabled = false
-        pieChart.setDrawEntryLabels(false)
-        pieChart.invalidate()
+        updatePieChart(entries, colors)
+        binding.recyclerViewDetails.adapter = ItemDetailAdapter(detailItemsForAdapter)
     }
 
-//    details pada tiap2 chart
-    private fun layoutDetailsRow(label: String, value: Int, total: Int, color: Int): View {
-        val row = LinearLayout(requireContext())
-        row.orientation = LinearLayout.HORIZONTAL
-        row.layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        row.setPadding(16, 8, 16, 8)
-
-        val percent = (value.toFloat() / total.toFloat()) * 100
-        val format = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
-
-        val leftLayout = LinearLayout(requireContext())
-        leftLayout.orientation = LinearLayout.HORIZONTAL
-        leftLayout.layoutParams = LinearLayout.LayoutParams(
-            0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
-        )
-
-        val tvPercent = TextView(requireContext())
-        tvPercent.text = String.format("%.0f%%", percent)
-        tvPercent.setBackgroundColor(color)
-        tvPercent.setTextColor(Color.WHITE)
-        tvPercent.setPadding(0, 8, 0, 8)
-        tvPercent.textAlignment = View.TEXT_ALIGNMENT_CENTER
-        tvPercent.gravity = Gravity.CENTER
-
-        val percentParams = LinearLayout.LayoutParams(
-            (64 * resources.displayMetrics.density).toInt(), // 64dp in px
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        percentParams.setMargins(0, 0, 16, 0)
-        tvPercent.layoutParams = percentParams
-
-
-        val tvLabel = TextView(requireContext())
-        tvLabel.text = label
-        tvLabel.setTextColor(Color.BLACK)
-        tvLabel.setPadding(0, 0, 16, 0)
-
-        leftLayout.addView(tvPercent)
-        leftLayout.addView(tvLabel)
-
-        val tvAmount = TextView(requireContext())
-        tvAmount.text = format.format(value)
-        tvAmount.setTextColor(color)
-        tvAmount.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
-        tvAmount.layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-
-        row.addView(leftLayout)
-        row.addView(tvAmount)
-
-        return row
+    private fun updatePieChart(entries: List<PieEntry>, colors: List<Int>) {
+        val dataSet = PieDataSet(entries, "").apply {
+            this.colors = colors
+            setDrawValues(false)
+        }
+        binding.piechart.apply {
+            data = PieData(dataSet)
+            description.isEnabled = false
+            isDrawHoleEnabled = false
+            legend.isEnabled = false
+            setDrawEntryLabels(false)
+            invalidate()
+        }
     }
 
-    //    autogenerate warna chart pada pengeluaran dan pendapatan
+    // --- Fungsi untuk Mengatur Visibilitas UI ---
+
+    private fun showLoading() {
+        // Karena layout tidak memiliki ProgressBar, kita sembunyikan semua view
+        // dan tampilkan pesan loading pada txtNoData
+        binding.piechart.visibility = View.GONE
+        binding.recyclerViewDetails.visibility = View.GONE
+        binding.txtNoData.visibility = View.VISIBLE
+        binding.txtNoData.text = "Memuat data..."
+    }
+
+    private fun showDataView() {
+        binding.piechart.visibility = View.VISIBLE
+        binding.recyclerViewDetails.visibility = View.VISIBLE
+        binding.txtNoData.visibility = View.GONE
+    }
+
+    private fun showEmptyData() {
+        binding.piechart.visibility = View.GONE
+        binding.recyclerViewDetails.visibility = View.GONE
+        binding.txtNoData.visibility = View.VISIBLE
+        binding.txtNoData.text = "Tidak ada data untuk periode ini."
+    }
+
+    private fun showError(message: String) {
+        binding.piechart.visibility = View.GONE
+        binding.recyclerViewDetails.visibility = View.GONE
+        binding.txtNoData.visibility = View.VISIBLE
+        binding.txtNoData.text = message
+    }
+
     private fun generateShades(baseColor: Int, count: Int): List<Int> {
+        if (count <= 0) return emptyList()
         val result = mutableListOf<Int>()
-        val factor = 0.85f
-        var current = baseColor
-
+        val hsv = FloatArray(3)
+        Color.colorToHSV(baseColor, hsv)
         for (i in 0 until count) {
-            result.add(current)
-            current = darkenColor(current, factor)
+            hsv[2] = 1.0f - (i.toFloat() / (count * 1.5f))
+            result.add(Color.HSVToColor(hsv))
         }
-        return result
+        return result.reversed()
     }
 
-    private fun darkenColor(color: Int, factor: Float): Int {
-        val r = (Color.red(color) * factor).toInt().coerceAtLeast(0)
-        val g = (Color.green(color) * factor).toInt().coerceAtLeast(0)
-        val b = (Color.blue(color) * factor).toInt().coerceAtLeast(0)
-        return Color.rgb(r, g, b)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

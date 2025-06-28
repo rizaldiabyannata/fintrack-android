@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- Anda bisa mengganti warna ini agar sesuai dengan tema aplikasi Anda -->
+    <solid android:color="?attr/colorSecondary" />
+    <!-- Sesuaikan radius untuk mengontrol seberapa bulat sudutnya -->
+    <corners android:radius="16dp" />
+</shape>

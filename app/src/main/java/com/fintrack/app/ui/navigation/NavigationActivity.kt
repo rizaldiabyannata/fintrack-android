@@ -1,12 +1,12 @@
 package com.fintrack.app.ui.navigation
 
 import com.fintrack.app.ui.LainnyaFragment
-import com.fintrack.app.ui.statistik.StatistikFragment
 //import com.fintrack.app.ui.transaction.TransaksiFragment
-import com.fintrack.app.ui.budget.BudgetFragment
+import com.fintrack.app.ui.manageBudget.ManageBudgetFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.fintrack.app.R
+import com.fintrack.app.ui.statistik.StatistikFragment
 import com.fintrack.app.ui.transaction.TransaksiFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,20 +24,20 @@ class NavigationActivity : AppCompatActivity() {
 
         // Set default fragment
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, BudgetFragment())
+            .replace(R.id.fragment_container, TransaksiFragment())
             .commit()
 
         bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_transaksi -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, BudgetFragment())
+                        .replace(R.id.fragment_container, TransaksiFragment())
                         .commit()
                     true
                 }
                 R.id.nav_statistik -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, TransaksiFragment())
+                        .replace(R.id.fragment_container, StatistikFragment())
                         .commit()
                     true
                 }

@@ -4,12 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardElevation="4dp"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardElevation="2dp"
     app:cardCornerRadius="12dp"
-    app:cardBackgroundColor="#FFFFFF"
-    app:strokeColor="#E0E0E0"
-    app:strokeWidth="1dp">
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:strokeColor="?attr/colorOnSurface"
+    app:strokeWidth="0.5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Juni"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="26sp"
                 android:textStyle="bold"
                 android:includeFontPadding="false"
@@ -42,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="2025"
-                android:textColor="#757575"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="12sp"
                 android:includeFontPadding="false"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_month"
@@ -54,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
                 android:text="Rp. 0,00"
-                android:textColor="#4285F4"
+                android:textColor="@color/primaryBlue"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tv_expense"
@@ -65,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rp. 0,00"
-                android:textColor="#F44336"
+                android:textColor="@color/primaryRed"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -79,12 +80,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="gone"
-            android:background="#F5F5F5">
+            android:background="?android:attr/colorBackground">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E0E0E0" />
+                android:background="?android:attr/listDivider" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_details"

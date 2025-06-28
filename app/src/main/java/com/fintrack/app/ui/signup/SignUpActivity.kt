@@ -161,7 +161,6 @@ class SignUpActivity : AppCompatActivity() {
                     is ApiResponse.Loading -> showLoading(true) // Sebenarnya loading sudah jalan
                     is ApiResponse.Success -> {
                         showLoading(false)
-                        Toast.makeText(this@SignUpActivity, state.data.message, Toast.LENGTH_LONG).show()
                         navigateToSignIn()
                     }
                     is ApiResponse.Error -> {

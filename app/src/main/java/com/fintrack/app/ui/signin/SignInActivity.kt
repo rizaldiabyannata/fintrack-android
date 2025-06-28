@@ -1,11 +1,9 @@
 package com.fintrack.app.ui.signin
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
-import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -16,11 +14,9 @@ import com.fintrack.app.data.SessionManager
 import com.fintrack.app.data.network.ApiResponse
 import com.fintrack.app.data.request.LoginRequest
 import com.fintrack.app.data.request.UserPayload
-import com.fintrack.app.data.response.User
 import com.fintrack.app.databinding.ActivitySignInBinding
 import com.fintrack.app.ui.navigation.NavigationActivity
 import com.fintrack.app.ui.otp.OTPVerificationActivity
-import com.fintrack.app.ui.profile.ProfileActivity
 import com.fintrack.app.ui.signup.SignUpActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -37,7 +33,6 @@ class SignInActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignInBinding
     private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var sharedPreferences: SharedPreferences
 
     @Inject
     lateinit var sessionManager: SessionManager
@@ -50,38 +45,35 @@ class SignInActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "SignInActivity"
-        private const val PREFS_NAME = "user_prefs"
     }
 
     private val googleSignInLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
+        showLoading(false) // Stop loading once the Google Sign-In UI is closed
         if (result.resultCode == RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
                 val account = task.getResult(ApiException::class.java)!!
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
-                showLoading(false)
                 Log.w(TAG, "Google sign in failed", e)
-                displayToast("Google sign in failed")
+                displayToast("Google sign in failed. Code: ${e.statusCode}")
             }
-        } else {
-            showLoading(false)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySignInBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
-
-        if (firebaseAuth.currentUser != null) {
+        // Check session using SessionManager, which is now the single source of truth
+        if (sessionManager.isLoggedIn()) {
             navigateToMain()
             return
         }
+
+        binding = ActivitySignInBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setupGoogleSignIn()
         setupClickListeners()
@@ -131,11 +123,11 @@ class SignInActivity : AppCompatActivity() {
                     is ApiResponse.Loading -> showLoading(true)
                     is ApiResponse.Success -> {
                         showLoading(false)
-                        displayToast(state.data.message)
+                        displayToast(state.data.message ?: "OTP sent successfully")
                         // Arahkan ke OTP setelah permintaan berhasil
                         val intent = Intent(this@SignInActivity, OTPVerificationActivity::class.java).apply {
                             putExtra(OTPVerificationActivity.EXTRA_EMAIL, email)
-                            putExtra(OTPVerificationActivity.EXTRA_OTP_TYPE, OTPVerificationActivity.OTPType.RESET_PASSWORD.value)
+                            putExtra(OTPVerificationActivity.EXTRA_OTP_TYPE, OTPVerificationActivity.OTPType.RESET_PASSWORD)
                         }
                         startActivity(intent)
                     }
@@ -143,7 +135,6 @@ class SignInActivity : AppCompatActivity() {
                         showLoading(false)
                         displayToast(state.errorMessage)
                     }
-                    else -> showLoading(false)
                 }
             }
         }
@@ -156,25 +147,31 @@ class SignInActivity : AppCompatActivity() {
                     is ApiResponse.Loading -> showLoading(true)
                     is ApiResponse.Success -> {
                         showLoading(false)
-                        sessionManager.saveUserSession(state.data.user)
-                        displayToast("Welcome back, ${state.data.user.name}!")
-                        navigateToMain()
+                        val user = state.data.user
+                        if (user != null) {
+                            sessionManager.saveUserSession(user)
+                            displayToast("Welcome back, ${user.name}!")
+                            navigateToMain()
+                        } else {
+                            displayToast("Gagal mendapatkan data pengguna.")
+                        }
                     }
                     is ApiResponse.Error -> {
                         showLoading(false)
-                        if (state.errorMessage.contains("Email belum terverifikasi")) {
+                        // Backend now sends a more specific message for unverified email.
+                        if (state.errorMessage.contains("Please verify your email")) {
                             navigateToOTPVerification(loginRequest.email)
                         } else {
                             displayToast(state.errorMessage)
                         }
                     }
-                    else -> showLoading(false)
                 }
             }
         }
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
+        showLoading(true) // Show loading indicator while authenticating with Firebase
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
@@ -183,8 +180,11 @@ class SignInActivity : AppCompatActivity() {
                     if (tokenTask.isSuccessful) {
                         val firebaseToken = tokenTask.result?.token
                         if (firebaseToken != null && user != null) {
-                            val payload = UserPayload(user.uid, user.displayName ?: "", user.email ?: "", "google")
+                            val payload = UserPayload(user.uid, user.displayName ?: "", user.email ?: "")
                             loginWithGoogle(firebaseToken, payload)
+                        } else {
+                            showLoading(false)
+                            displayToast("Gagal mendapatkan token otentikasi.")
                         }
                     } else {
                         showLoading(false)
@@ -202,34 +202,31 @@ class SignInActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repository.loginWithGoogle(token, payload).collect { state ->
                 when (state) {
-                    is ApiResponse.Loading -> { /* Loading ditangani di awal */ }
+                    is ApiResponse.Loading -> { /* Loading handled in firebaseAuthWithGoogle */ }
                     is ApiResponse.Success -> {
                         showLoading(false)
-                        sessionManager.saveUserSession(state.data.user)
-                        displayToast("Welcome, ${state.data.user.name}!")
-                        navigateToMain()
+                        val user = state.data.user
+                        if (user != null) {
+                            sessionManager.saveUserSession(user)
+                            displayToast("Welcome, ${user.name}!")
+                            navigateToMain()
+                        } else {
+                            displayToast("Gagal mendapatkan data pengguna dari server.")
+                        }
                     }
                     is ApiResponse.Error -> {
                         showLoading(false)
                         displayToast(state.errorMessage)
                     }
-                    else -> showLoading(false)
                 }
             }
         }
     }
 
-    private fun saveUserToPrefs(user: User) {
-        val editor = sharedPreferences.edit()
-        editor.putString("uid", user.uid)
-        editor.putString("name", user.name)
-        editor.putString("email", user.email)
-        editor.putString("provider", user.provider)
-        editor.putBoolean("isLoggedIn", true)
-        editor.apply()
-    }
-
     private fun validateInput(email: String, password: String): Boolean {
+        binding.etEmailPhone.error = null
+        binding.etPassword.error = null
+
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.etEmailPhone.error = "Masukkan email yang valid"
             return false
@@ -244,7 +241,7 @@ class SignInActivity : AppCompatActivity() {
     private fun navigateToOTPVerification(email: String) {
         val intent = Intent(this, OTPVerificationActivity::class.java).apply {
             putExtra(OTPVerificationActivity.EXTRA_EMAIL, email)
-            putExtra(OTPVerificationActivity.EXTRA_OTP_TYPE, OTPVerificationActivity.OTPType.EMAIL_VERIFICATION.value)
+            putExtra(OTPVerificationActivity.EXTRA_OTP_TYPE, OTPVerificationActivity.OTPType.EMAIL_VERIFICATION)
         }
         startActivity(intent)
     }
@@ -260,9 +257,10 @@ class SignInActivity : AppCompatActivity() {
     private fun showLoading(isLoading: Boolean) {
         binding.btnSignin.isEnabled = !isLoading
         binding.btnGoogle.isEnabled = !isLoading
+        binding.progressBar.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
     }
 
     private fun displayToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

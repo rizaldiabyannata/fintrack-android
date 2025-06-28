@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
-    <!-- Baris atas: Navigasi bulan/tahun & tombol kanan -->
-    <LinearLayout
+    android:paddingTop="36dp"
+    android:paddingHorizontal="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
         android:layout_marginBottom="8dp"
-        android:weightSum="1">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Navigasi bulan-tahun -->
         <LinearLayout
+            android:id="@+id/month_navigation_layout"
             android:layout_width="0dp"
-            android:layout_weight="0.6"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="start|center_vertical">
+            android:gravity="start|center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/time_dropdown_layout"
+            app:layout_constraintHorizontal_weight="0.6">
 
             <ImageButton
                 android:id="@+id/btn_prev_month"
@@ -34,10 +39,10 @@
                 android:id="@+id/txt_month_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:paddingHorizontal="8dp" />
+                android:paddingHorizontal="8dp"
+                android:text="Jun 2020"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/btn_next_month"
@@ -48,22 +53,27 @@
                 app:srcCompat="@drawable/chevron_right_24px" />
         </LinearLayout>
 
-        <!-- Tombol dropdown bulanan-tahunan -->
         <LinearLayout
+            android:id="@+id/time_dropdown_layout"
             android:layout_width="0dp"
-            android:layout_weight="0.4"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end">
+            android:gravity="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/month_navigation_layout"
+            app:layout_constraintHorizontal_weight="0.4">
 
             <TextView
                 android:id="@+id/txt_waktu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:layout_gravity="center_vertical"
                 android:text=""
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:paddingHorizontal="8dp" />
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/btn_dropdown"
@@ -71,19 +81,27 @@
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Waktu"
+                app:tint="?attr/colorOnSecondary"
                 app:srcCompat="@drawable/baseline_keyboard_arrow_down_24" />
-
         </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabStatistik"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tabTextAppearance="@style/CustomTabTextAppearance"
+        />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerStatistik"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
-</LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/tabStatistik"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

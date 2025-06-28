@@ -2,22 +2,50 @@ package com.fintrack.app.data.response
 
 import com.google.gson.annotations.SerializedName
 
-/**
- * Model data untuk User.
- */
 data class User(
-    @SerializedName("uid")
-    val uid: String,
 
-    @SerializedName("name")
-    val name: String,
+    @field:SerializedName("lastLogin")
+    val lastLogin: String? = null,
 
-    @SerializedName("email")
-    val email: String,
+    @field:SerializedName("role")
+    val role: String? = null,
 
-    @SerializedName("provider")
-    val provider: String,
+    @field:SerializedName("isActive")
+    val isActive: Boolean? = null,
 
-    @SerializedName("emailVerified")
-    val isEmailVerified: Boolean
+    @field:SerializedName("accessToken")
+    val accessToken: String? = null,
+
+    @field:SerializedName("uid")
+    val uid: String? = null,
+
+    @field:SerializedName("photoURL")
+    val photoURL: String? = null,
+
+    @field:SerializedName("emailVerified")
+    val emailVerified: Boolean? = null,
+
+    @field:SerializedName("createdAt")
+    val createdAt: String? = null,
+
+    @field:SerializedName("provider")
+    val provider: String? = null,
+
+    @field:SerializedName("__v")
+    val v: Int? = null,
+
+    @field:SerializedName("name")
+    val name: String? = null,
+
+    @field:SerializedName("_id")
+    val id: String? = null,
+
+    @field:SerializedName("email")
+    val email: String? = null,
+
+    @field:SerializedName("updatedAt")
+    val updatedAt: String? = null,
+
+    @field:SerializedName("refreshToken")
+    val refreshToken: String? = null
 )

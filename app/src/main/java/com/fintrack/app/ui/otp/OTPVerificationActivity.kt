@@ -106,7 +106,6 @@ class OTPVerificationActivity : AppCompatActivity() {
                         // Penanganan berdasarkan jenis OTP
                         when (val data = state.data) {
                             is com.fintrack.app.data.response.LoginResponse -> { // Verifikasi email berhasil
-                                Toast.makeText(this@OTPVerificationActivity, data.message, Toast.LENGTH_LONG).show()
                                 navigateToSignIn()
                             }
                             is com.fintrack.app.data.response.VerifyOtpResponse -> { // OTP reset password berhasil
