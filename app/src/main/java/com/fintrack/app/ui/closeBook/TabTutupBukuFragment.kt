@@ -11,7 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fintrack.app.R
 import com.fintrack.app.data.BudgetRepository
+import com.fintrack.app.data.TransactionRepository // <-- DITAMBAHKAN
 import com.fintrack.app.data.network.ApiResponse
+import com.fintrack.app.data.request.TransactionPayload // <-- DITAMBAHKAN
 import com.fintrack.app.data.response.GetMonthlyBudgetResponse
 import com.fintrack.app.databinding.FragmentTabTutupBukuBinding
 import com.fintrack.app.ui.manageBudget.BudgetItem
@@ -33,6 +35,10 @@ class TabTutupBukuFragment : Fragment() {
 
     @Inject
     lateinit var budgetRepository: BudgetRepository
+
+    // DITAMBAHKAN: Inject TransactionRepository
+    @Inject
+    lateinit var transactionRepository: TransactionRepository
 
     private lateinit var budgetAdapter: BudgetAdapter
     private val calendar: Calendar = Calendar.getInstance()
@@ -91,10 +97,10 @@ class TabTutupBukuFragment : Fragment() {
             budgetDetail?.let {
                 val categoryName = (it.categoryName as? String) ?: "Tanpa Kategori"
                 BudgetItem(
+                    id= it.id ?: "",
                     name = categoryName,
-                    amount = it.amountLimit ?: 0,
+                    amount = it.amountLimit?.toDouble() ?: 0.0,
                     used = it.spentAmount?.toDouble() ?: 0.0,
-                    // PANGGILAN BARU ke CategoryIconMapper
                     iconResId = CategoryIconMapper.getIconForCategory(categoryName)
                 )
             }
@@ -105,7 +111,6 @@ class TabTutupBukuFragment : Fragment() {
 
     private fun updateBudgetCard(totalBudget: Double, totalUsed: Double) {
         val percentage = if (totalBudget > 0) (totalUsed / totalBudget * 100).toInt() else 0
-        Log.d("TabTutupBukuFragment", "Percentage: $percentage")
         binding.progressAnggaran.progress = percentage
         binding.textPersentaseAnggaran.text = "$percentage%"
 
@@ -117,14 +122,39 @@ class TabTutupBukuFragment : Fragment() {
     private fun setupActionButtons() {
         binding.buttonUbahKategori.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, ManageBudgetFragment()) // Ganti dengan ID container Anda
+                .replace(R.id.fragment_container, ManageBudgetFragment())
                 .addToBackStack(null)
                 .commit()
         }
         binding.buttonExportLaporan.setOnClickListener {
-            Toast.makeText(requireContext(), "Export laporan via email", Toast.LENGTH_SHORT).show()
+            // Memanggil fungsi export saat tombol di klik
+            exportTransactionHistory()
         }
     }
+
+    private fun exportTransactionHistory() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            transactionRepository.exportTransactions().collect { response ->
+                when (response) {
+                    is ApiResponse.Loading -> {
+                        binding.buttonExportLaporan.isEnabled = false
+                        Toast.makeText(requireContext(), "Memulai proses export...", Toast.LENGTH_SHORT).show()
+                    }
+                    is ApiResponse.Success -> {
+                        binding.buttonExportLaporan.isEnabled = true
+                        // Tampilkan pesan sukses dari backend
+                        Toast.makeText(requireContext(), response.data.message, Toast.LENGTH_LONG).show()
+                    }
+                    is ApiResponse.Error -> {
+                        binding.buttonExportLaporan.isEnabled = true
+                        // Tampilkan pesan error
+                        Toast.makeText(requireContext(), "Export gagal: ${response.errorMessage}", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

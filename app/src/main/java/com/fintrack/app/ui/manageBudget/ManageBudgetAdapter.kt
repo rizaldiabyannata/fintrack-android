@@ -5,13 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.fintrack.app.R
 import java.text.NumberFormat
 import java.util.Locale
 
-class ManageBudgetAdapter(private var budgetList: List<BudgetItem>) :
+// DIUBAH: Menambahkan listener pada constructor
+class ManageBudgetAdapter(
+    private var budgetList: List<BudgetItem>,
+    private val onEditClick: (String) -> Unit
+) :
     RecyclerView.Adapter<ManageBudgetAdapter.BudgetViewHolder>() {
 
     class BudgetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -36,8 +39,9 @@ class ManageBudgetAdapter(private var budgetList: List<BudgetItem>) :
         val formatter = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
         holder.totalBudget.text = formatter.format(currentItem.amount.toLong())
 
+        // DIUBAH: Menambahkan aksi klik yang memanggil listener dengan ID
         holder.editIconBudget.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "Edit item: ${currentItem.name}", Toast.LENGTH_SHORT).show()
+            onEditClick(currentItem.id)
         }
     }
 

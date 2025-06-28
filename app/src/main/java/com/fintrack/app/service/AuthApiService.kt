@@ -53,4 +53,9 @@ interface AuthApiService {
     suspend fun resendVerificationOtp(
         @Body emailData: Map<String, String>
     ): Response<BaseResponse>
+
+    @POST("api/auth/logout")
+    suspend fun logout(
+        @Body payload: Map<String, String>
+    ): Response<BaseResponse>
 }

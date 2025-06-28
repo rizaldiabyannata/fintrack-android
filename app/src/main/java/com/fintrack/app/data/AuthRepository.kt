@@ -20,8 +20,13 @@ import javax.inject.Singleton
 @Singleton
 class AuthRepository @Inject constructor(
     private val apiService: AuthApiService,
-    private val firebaseAuth: FirebaseAuth // FirebaseAuth tetap di-inject untuk fungsi lain
+    private val firebaseAuth: FirebaseAuth, // FirebaseAuth tetap di-inject untuk fungsi lain
+    private val sessionManager: SessionManager
 ) {
+
+    fun getRefrestToken(): String? {
+        return sessionManager.getRefreshToken()
+    }
 
     fun register(registerRequest: RegisterRequest): Flow<ApiResponse<BaseResponse>> = flow {
         emit(ApiResponse.Loading)
@@ -148,6 +153,27 @@ class AuthRepository @Inject constructor(
             emit(ApiResponse.Error("Gagal terhubung ke server. Kode: ${e.code()}"))
         } catch (e: IOException) {
             emit(ApiResponse.Error("Tidak ada koneksi internet. Periksa jaringan Anda."))
+        }
+    }
+
+    fun logout(): Flow<ApiResponse<BaseResponse>> = flow {
+        emit(ApiResponse.Loading)
+
+        val refreshToken = sessionManager.getRefreshToken()
+        if (refreshToken == null) {
+            emit(ApiResponse.Error("Sesi tidak ditemukan atau sudah berakhir."))
+            return@flow
+        }
+
+        try {
+            val response = apiService.logout(mapOf("refreshToken" to refreshToken))
+            if (response.isSuccessful && response.body() != null) {
+                emit(ApiResponse.Success(response.body()!!))
+            } else {
+                emit(ApiResponse.Error(parseErrorMessage(response.errorBody()?.string(), response.code())))
+            }
+        } catch (e: Exception) {
+            emit(ApiResponse.Error(e.message ?: "Logout gagal"))
         }
     }
 

@@ -10,5 +10,5 @@ data class DetailsItemStat(
     val totalAmount: Int? = null,
 
     @field:SerializedName("percentage")
-    val percentage: Int? = null
+    val percentage: Double? = null
 )

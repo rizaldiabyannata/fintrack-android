@@ -43,4 +43,9 @@ interface TransactionApiService {
         @Header("Authorization") authHeader: String,
         @Path("id") id: String
     ): Response<BaseResponse>
+
+    @POST("api/transaction/export")
+    suspend fun exportTransactions(
+        @Header("Authorization") authHeader: String,
+    ): Response<BaseResponse>
 }

@@ -48,7 +48,10 @@ class ManageBudgetFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        manageBudgetAdapter = ManageBudgetAdapter(emptyList())
+        // DIUBAH: Menginisialisasi adapter dengan listener untuk aksi edit
+        manageBudgetAdapter = ManageBudgetAdapter(emptyList()) { budgetId ->
+            navigateToEditBudget(budgetId)
+        }
         binding.recyclerView.apply {
             adapter = manageBudgetAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -79,10 +82,11 @@ class ManageBudgetFragment : Fragment() {
                             networkItem?.let {
                                 val categoryName = it.category?.name ?: "Tanpa Kategori"
                                 BudgetItem(
+                                    // DIUBAH: Menyimpan ID dari response API
+                                    id = it.id ?: "",
                                     name = categoryName,
-                                    amount = it.amountLimit ?: 0,
-                                    used = 0.0, // Anda bisa sesuaikan ini jika API mengembalikan nilai terpakai
-                                    // Menggunakan CategoryIconMapper yang terpusat
+                                    amount = it.amountLimit?.toDouble() ?: 0.0,
+                                    used = 0.0,
                                     iconResId = CategoryIconMapper.getIconForCategory(categoryName)
                                 )
                             }
@@ -93,14 +97,25 @@ class ManageBudgetFragment : Fragment() {
                         Toast.makeText(context, apiResponse.errorMessage, Toast.LENGTH_LONG).show()
                     }
                     is ApiResponse.Loading -> {
-                        // Handle loading state jika Anda memiliki progress bar
+                        // Handle loading state
                     }
                 }
             }
         }
     }
 
-    // Fungsi lokal mapCategoryToIcon telah dihapus karena sudah digantikan oleh CategoryIconMapper
+    // DITAMBAHKAN: Fungsi untuk navigasi ke halaman edit
+    private fun navigateToEditBudget(budgetId: String) {
+        val fragment = AddBudgetFragment().apply {
+            arguments = Bundle().apply {
+                putString(AddBudgetFragment.ARG_BUDGET_ID, budgetId)
+            }
+        }
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

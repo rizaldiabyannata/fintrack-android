@@ -67,6 +67,25 @@ class TransactionRepository @Inject constructor(
         }
     }
 
+    fun exportTransactions(): Flow<ApiResponse<BaseResponse>> = flow {
+        emit(ApiResponse.Loading)
+        try {
+            val response = apiService.exportTransactions(getAuthToken())
+            if (response.isSuccessful && response.body() != null) {
+                emit(ApiResponse.Success(response.body()!!))
+            } else {
+                val errorMessage = parseErrorMessage(response.errorBody()?.string(), response.code())
+                emit(ApiResponse.Error(errorMessage))
+            }
+        } catch (e: HttpException) {
+            emit(ApiResponse.Error("Gagal terhubung ke server. Kode: ${e.code()}"))
+        } catch (e: IOException) {
+            emit(ApiResponse.Error("Tidak ada koneksi internet. Periksa jaringan Anda."))
+        } catch (e: Exception) {
+            emit(ApiResponse.Error(e.message ?: "Gagal melakukan export."))
+        }
+    }
+
     private fun parseErrorMessage(errorBody: String?, code: Int): String {
         return try {
             val jsonObj = JSONObject(errorBody ?: "")

@@ -33,7 +33,7 @@ data class ExpenseBreakdownItem(
 	val totalAmount: Int? = null,
 
 	@field:SerializedName("percentage")
-	val percentage: Int? = null,
+	val percentage: Double? = null,
 
 	@field:SerializedName("details")
 	val details: List<DetailsItemStat?>? = null,
@@ -48,7 +48,7 @@ data class IncomeBreakdownItem(
 	val totalAmount: Int? = null,
 
 	@field:SerializedName("percentage")
-	val percentage: Int? = null,
+	val percentage: Double? = null,
 
 	@field:SerializedName("details")
 	val details: List<DetailsItemStat?>? = null,

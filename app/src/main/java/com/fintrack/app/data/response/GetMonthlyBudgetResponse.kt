@@ -41,7 +41,7 @@ data class RemainingBudgetListItem(
 	val v: Int? = null,
 
 	@field:SerializedName("percentage")
-	val percentage: Int? = null,
+	val percentage: Double? = null,
 
 	@field:SerializedName("_id")
 	val id: String? = null,
