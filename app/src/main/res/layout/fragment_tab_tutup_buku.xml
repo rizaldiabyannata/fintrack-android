@@ -11,8 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="0dp"
-        android:paddingEnd="0dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:paddingBottom="16dp">
 
         <!-- Konten Card Anggaran tidak diubah -->
@@ -23,6 +23,7 @@
             android:layout_marginTop="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
+            style="@style/CardBackgroundCustom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -111,6 +112,7 @@
             android:layout_marginTop="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
+            style="@style/CardBackgroundCustom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/card_anggaran">
@@ -169,7 +171,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Konten Card Aset tidak diubah -->
+        <!-- Card Aset DIUBAH untuk menampilkan pemasukan dan pengeluaran -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_aset"
             android:layout_width="0dp"
@@ -177,6 +179,7 @@
             android:layout_marginTop="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
+            style="@style/CardBackgroundCustom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/card_kategori">
@@ -192,81 +195,107 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/assets"
                     android:src="@drawable/ic_coins"
-                    app:tint="?attr/colorOnSecondary"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_aset"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/text_aset"
+                    app:tint="?attr/colorOnSecondary" />
 
                 <TextView
                     android:id="@+id/text_aset"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Aset"
+                    android:text="Aset Bulan Ini"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/image_aset"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <TextView
-                    android:id="@+id/text_percentage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="262dp"
-                    android:text="100%"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/text_aset"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/text_expenses_cash_label"
+                    android:id="@+id/text_income_label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Pengeluaran"
+                    android:text="Total Pemasukan"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp"
-                    app:layout_constraintEnd_toStartOf="@+id/text_expenses_cash_amount"
+                    app:layout_constraintEnd_toStartOf="@+id/text_income_amount"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_percentage" />
+                    app:layout_constraintTop_toBottomOf="@+id/text_aset" />
 
                 <TextView
-                    android:id="@+id/text_expenses_cash_amount"
+                    android:id="@+id/text_income_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rp. 500.000,00"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/text_expenses_cash_label" />
+                    app:layout_constraintTop_toTopOf="@+id/text_income_label"
+                    tools:text="Rp. 5.000.000" />
 
                 <TextView
-                    android:id="@+id/text_expenses_debit_label"
+                    android:id="@+id/text_expense_label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Pengeluaran"
+                    android:text="Total Pengeluaran"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp"
-                    app:layout_constraintEnd_toStartOf="@+id/text_expenses_debit_amount"
+                    app:layout_constraintEnd_toStartOf="@+id/text_expense_amount"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_expenses_cash_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/text_income_label" />
 
                 <TextView
-                    android:id="@+id/text_expenses_debit_amount"
+                    android:id="@+id/text_expense_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rp. 0,00"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/text_expenses_debit_label" />
+                    app:layout_constraintTop_toTopOf="@+id/text_expense_label"
+                    tools:text="Rp. 3.250.000" />
+
+                <View
+                    android:id="@+id/divider_aset"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_expense_label" />
+
+                <TextView
+                    android:id="@+id/text_net_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Sisa"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/text_net_amount"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_aset" />
+
+                <TextView
+                    android:id="@+id/text_net_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/text_net_label"
+                    tools:text="Rp. 1.750.000" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
+
 
         <!-- Konten Tombol Export tidak diubah -->
         <com.google.android.material.button.MaterialButton

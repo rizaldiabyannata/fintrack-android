@@ -3,21 +3,15 @@ package com.fintrack.app.ui.closeBook
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.fintrack.app.R
 import com.fintrack.app.databinding.ItemCategoryBinding
 import com.fintrack.app.ui.manageBudget.BudgetItem
 import java.text.NumberFormat
 import java.util.Locale
 
-/**
- * Adapter untuk RecyclerView kategori yang datanya bisa diperbarui.
- */
-// Mengubah konstruktor untuk menerima list yang bisa diubah
 class BudgetAdapter(private var budgetItems: MutableList<BudgetItem> = mutableListOf()) :
     RecyclerView.Adapter<BudgetAdapter.ViewHolder>() {
 
-    /**
-     * ViewHolder memegang view untuk setiap item dalam daftar.
-     */
     inner class ViewHolder(private val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -28,20 +22,28 @@ class BudgetAdapter(private var budgetItems: MutableList<BudgetItem> = mutableLi
             val localeID = Locale("in", "ID")
             val formatRupiah = NumberFormat.getCurrencyInstance(localeID)
             val formattedAmount = formatRupiah.format(budgetItem.amount.toLong())
-                .replace("Rp", "Rp. ")
+                .replace("Rp", "Rp ")
                 .replace(",00", "")
             binding.textCategoryAmount.text = formattedAmount
+
+            // DILAKUKAN PERBAIKAN: Kalkulasi persentase penggunaan dilakukan di sini
+            val usagePercentage = if (budgetItem.amount > 0) {
+                ((budgetItem.used / budgetItem.amount) * 100).toInt()
+            } else {
+                0
+            }
+
+            // Terapkan nilai yang sudah dihitung ke UI
+            binding.progressCategory.progress = usagePercentage
+            binding.textCategoryPercentage.text = "$usagePercentage% terpakai"
+
         }
     }
 
-    /**
-     * Fungsi baru untuk memperbarui data di adapter.
-     * @param newItems Daftar BudgetItem baru yang akan ditampilkan.
-     */
     fun updateData(newItems: List<BudgetItem>) {
         budgetItems.clear()
         budgetItems.addAll(newItems)
-        notifyDataSetChanged() // Memberi tahu RecyclerView bahwa data telah berubah
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

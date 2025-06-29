@@ -4,36 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="16dp">
+    android:paddingVertical="12dp">
 
     <ImageView
         android:id="@+id/image_category_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnSecondary"
+        app:tint="?attr/colorOnSurface"
         tools:src="@drawable/ic_restaurant" />
 
     <TextView
         android:id="@+id/text_category_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
         android:textColor="?attr/colorOnSurface"
         android:textSize="14sp"
+        android:fontFamily="@font/poppins_semibold"
         app:layout_constraintStart_toEndOf="@+id/image_category_icon"
         app:layout_constraintTop_toTopOf="@+id/image_category_icon"
-        tools:text="Makanan" />
+        app:layout_constraintEnd_toStartOf="@id/text_category_amount"
+        tools:text="Makanan &amp; Minuman" />
 
     <TextView
         android:id="@+id/text_category_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/text_category_name"
+        tools:text="Rp500.000" />
+
+    <ProgressBar
+        android:id="@+id/progress_category"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        android:layout_marginTop="16dp"
+        android:progress="9"
+        android:progressTint="?attr/colorOnSecondary"
+        app:layout_constraintStart_toStartOf="@id/text_category_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_category_name"/>
+
+    <TextView
+        android:id="@+id/text_category_percentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textColor="?attr/colorSecondary"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/text_category_name"
-        app:layout_constraintTop_toBottomOf="@+id/text_category_name"
-        tools:text="Rp. 500.000,00" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progress_category"
+        tools:text="60% terpakai"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

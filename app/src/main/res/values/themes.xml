@@ -4,13 +4,12 @@
         <item name="colorPrimaryVariant">@color/button_blue</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/secondaryGrey</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/darkGrey</item>
 
         <item name="android:colorBackground">@color/white</item>
         <item name="colorSurface">@color/white</item>
         <item name="colorOnBackground">@color/black</item>
         <item name="colorOnSurface">@color/black</item>
-
         <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
     </style>
 
@@ -47,5 +46,9 @@
 
     <style name="CustomBlackColor">
         <item name="colorOnSecondary">@color/black</item>
+    </style>
+
+    <style name="CardBackgroundCustom">
+        <item name="android:backgroundTint">@color/soft_abu</item>
     </style>
 </resources>

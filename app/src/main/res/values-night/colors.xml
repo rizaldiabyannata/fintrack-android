@@ -16,6 +16,8 @@
     <color name="progress_bar_color">#64B5F6</color>
     <color name="button_color">#64B5F6</color>
 
+    <color name="soft_abu">#FF424242</color>
+
     <color name="export_button_text_color">#FF000000</color>
 
     <color name="abu_abu">#616161</color>

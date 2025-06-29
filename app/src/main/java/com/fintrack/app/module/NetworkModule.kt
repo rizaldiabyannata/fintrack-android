@@ -24,7 +24,7 @@ import javax.inject.Singleton
 object NetworkModule {
 
     private const val PREFS_NAME = "user_prefs"
-    private const val BASE_URL = "http://192.168.1.33:3000/"
+    private const val BASE_URL = "http://192.168.100.7:3000/"
 
     @Provides
     @Singleton

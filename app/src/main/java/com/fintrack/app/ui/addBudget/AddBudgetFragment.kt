@@ -1,12 +1,13 @@
 package com.fintrack.app.ui.addBudget
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.fintrack.app.R
@@ -14,7 +15,6 @@ import com.fintrack.app.data.BudgetRepository
 import com.fintrack.app.data.network.ApiResponse
 import com.fintrack.app.data.request.BudgetPayload
 import com.fintrack.app.data.response.BaseResponse
-import com.fintrack.app.data.response.Category // Pastikan Anda mengimpor data class Category
 import com.fintrack.app.databinding.FragmentAddBudgetBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -29,10 +29,9 @@ class AddBudgetFragment : Fragment() {
     @Inject
     lateinit var budgetRepository: BudgetRepository
 
-    // Variabel untuk mode edit
     private var budgetIdToEdit: String? = null
     private var isEditMode = false
-    private var categoryIdForUpdate: String? = null // DITAMBAHKAN: Untuk menyimpan ID kategori saat edit
+    private var categoryIdForUpdate: String? = null
 
     companion object {
         const val ARG_BUDGET_ID = "budget_id"
@@ -69,6 +68,8 @@ class AddBudgetFragment : Fragment() {
     private fun setupEditMode() {
         binding.titleTambahAnggaran.text = "Edit Anggaran"
         binding.buttonSimpanAnggaran.text = "Update Anggaran"
+        // Tampilkan tombol hapus
+        binding.buttonHapusAnggaran.isVisible = true
     }
 
     private fun loadBudgetData() {
@@ -78,11 +79,9 @@ class AddBudgetFragment : Fragment() {
                     when (response) {
                         is ApiResponse.Success -> {
                             val budget = response.data
-                            // DIUBAH: Simpan ID kategori untuk proses update nanti
                             categoryIdForUpdate = budget.category?.id
                             binding.autocompletetextKategori.setText(budget.category?.name, false)
                             binding.edittextJumlahAnggaran.setText(budget.amountLimit.toString())
-                            // Nonaktifkan pilihan kategori saat mengedit agar tidak bisa diubah
                             binding.tilKategori.isEnabled = false
                         }
                         is ApiResponse.Error -> {
@@ -102,6 +101,11 @@ class AddBudgetFragment : Fragment() {
 
         binding.buttonSimpanAnggaran.setOnClickListener {
             simpanAnggaran()
+        }
+
+        // DITAMBAHKAN: Listener untuk tombol hapus
+        binding.buttonHapusAnggaran.setOnClickListener {
+            showDeleteConfirmationDialog()
         }
     }
 
@@ -126,15 +130,7 @@ class AddBudgetFragment : Fragment() {
             return
         }
 
-        // DIUBAH: Tentukan nilai untuk field 'category' berdasarkan mode (edit atau tambah baru)
-        val categoryValue = if (isEditMode) {
-            // Jika mode edit, gunakan ID yang sudah disimpan
-            categoryIdForUpdate ?: ""
-        } else {
-            // Jika mode tambah baru, gunakan nama kategori dari input
-            namaKategori
-        }
-
+        val categoryValue = if (isEditMode) categoryIdForUpdate ?: "" else namaKategori
         if (isEditMode && categoryValue.isEmpty()) {
             Toast.makeText(context, "ID Kategori tidak ditemukan, tidak bisa update.", Toast.LENGTH_LONG).show()
             return
@@ -145,7 +141,6 @@ class AddBudgetFragment : Fragment() {
             amountLimit = jumlahAnggaran
         )
 
-        // Tentukan aksi: membuat baru atau update
         if (isEditMode) {
             updateExistingBudget(requestPayload)
         } else {
@@ -153,10 +148,32 @@ class AddBudgetFragment : Fragment() {
         }
     }
 
+    // DITAMBAHKAN: Dialog konfirmasi dan fungsi untuk memanggil API hapus
+    private fun showDeleteConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Hapus Anggaran")
+            .setMessage("Apakah Anda yakin ingin menghapus anggaran ini?")
+            .setPositiveButton("Hapus") { _, _ ->
+                deleteBudget()
+            }
+            .setNegativeButton("Batal", null)
+            .show()
+    }
+
+    private fun deleteBudget() {
+        budgetIdToEdit?.let { id ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                budgetRepository.deleteBudget(id).collect { response ->
+                    handleApiResponse(response, "hapus")
+                }
+            }
+        }
+    }
+
     private fun createNewBudget(payload: BudgetPayload) {
         viewLifecycleOwner.lifecycleScope.launch {
             budgetRepository.createBudget(payload).collect { response ->
-                handleApiResponse(response)
+                handleApiResponse(response, "simpan")
             }
         }
     }
@@ -165,13 +182,13 @@ class AddBudgetFragment : Fragment() {
         budgetIdToEdit?.let { id ->
             viewLifecycleOwner.lifecycleScope.launch {
                 budgetRepository.updateBudget(id, payload).collect { response ->
-                    handleApiResponse(response)
+                    handleApiResponse(response, "update")
                 }
             }
         }
     }
 
-    private fun handleApiResponse(response: ApiResponse<BaseResponse>) {
+    private fun handleApiResponse(response: ApiResponse<BaseResponse>, action: String) {
         when (response) {
             is ApiResponse.Loading -> showLoading(true)
             is ApiResponse.Success -> {
@@ -181,7 +198,7 @@ class AddBudgetFragment : Fragment() {
             }
             is ApiResponse.Error -> {
                 showLoading(false)
-                Toast.makeText(context, "Error: ${response.errorMessage}", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Gagal $action: ${response.errorMessage}", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -189,6 +206,7 @@ class AddBudgetFragment : Fragment() {
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding.buttonSimpanAnggaran.isEnabled = !isLoading
+        binding.buttonHapusAnggaran.isEnabled = !isLoading
     }
 
     override fun onDestroyView() {

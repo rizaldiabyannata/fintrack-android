@@ -14,13 +14,11 @@ object CategoryIconMapper {
             "kesehatan" -> R.drawable.ic_health
             "pendidikan" -> R.drawable.ic_education
             "keluarga" -> R.drawable.ic_family
-            "hadiah & donasi" -> R.drawable.ic_gift
             "perawatan diri" -> R.drawable.ic_personal_care
 
             // Income Categories
             "gaji" -> R.drawable.ic_salary
             "bonus" -> R.drawable.ic_bonus
-            "hadiah" -> R.drawable.ic_donation // Bisa menggunakan ikon yang sama dengan donasi
             "investasi" -> R.drawable.ic_investment
 
             // Default

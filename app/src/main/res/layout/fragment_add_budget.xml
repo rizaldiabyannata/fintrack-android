@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
     android:fillViewport="true"
-    android:paddingTop="24dp"
     tools:context=".ui.addBudget.AddBudgetFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp">
 
         <!-- Header -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,13 +39,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
-                android:gravity="start"
+                android:gravity="center_horizontal"
                 android:text="Tambah Anggaran"
                 android:textColor="?attr/colorOnSurface"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/button_kembali_tambah_anggaran"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
@@ -62,9 +62,10 @@
 
         <!-- Form Content -->
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/form_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="24dp"
+            android:paddingHorizontal="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header_container">
@@ -118,6 +119,22 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_jumlah_anggaran" />
+
+            <!-- DITAMBAHKAN: Tombol Hapus, awalnya tidak terlihat -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_hapus_anggaran"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Hapus Anggaran"
+                android:textColor="@color/primaryRed"
+                app:strokeColor="@color/primaryRed"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/button_simpan_anggaran" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

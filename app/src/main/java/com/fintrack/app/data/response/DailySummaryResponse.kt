@@ -14,8 +14,8 @@ data class DailySummaryResponse(
     val transactions: List<GetTransactionsResponseItem>? = null,
 
     @SerializedName("income")
-    val income: Int? = null,
+    val income: Double? = null,
 
     @SerializedName("expense")
-    val expense: Int? = null
+    val expense: Double? = null
 )

@@ -20,7 +20,7 @@ interface TransactionApiService {
     @GET("api/transaction")
     suspend fun getAllTransactions(
         @Header("Authorization") token: String,
-        @Query("month") month: Int, // Parameter untuk bulan
+        @Query("month") month: Int?, // Parameter untuk bulan
         @Query("year") year: Int    // Parameter untuk tahun
     ):  Response<List<DailySummaryResponse>>
 
