@@ -1,6 +1,5 @@
 package com.fintrack.app.ui.transaction
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,10 +16,6 @@ import com.fintrack.app.data.request.CreateTransactionRequest
 import com.fintrack.app.databinding.FragmentAddTransactionBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -32,9 +27,6 @@ class AddTransactionFragment : Fragment() {
     private var _binding: FragmentAddTransactionBinding? = null
     private val binding get() = _binding!!
 
-    private val calendar = Calendar.getInstance()
-    private var selectedDate: String = ""
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,24 +37,13 @@ class AddTransactionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupInitialDate()
         setupListeners()
         updateCategoryAdapter(binding.radiogroupTipe.checkedRadioButtonId)
-    }
-
-    private fun setupInitialDate() {
-        // Set tanggal hari ini sebagai default saat fragment dibuat
-        updateSelectedDate(calendar.time)
     }
 
     private fun setupListeners() {
         binding.buttonKembaliTambahAnggaran.setOnClickListener {
             parentFragmentManager.popBackStack()
-        }
-
-        binding.edittextTanggal.setOnClickListener {
-            showDatePickerDialog()
         }
 
         binding.radiogroupTipe.setOnCheckedChangeListener { _, checkedId ->
@@ -72,37 +53,6 @@ class AddTransactionFragment : Fragment() {
         binding.buttonSimpanTransaksi.setOnClickListener {
             simpanTransaksi()
         }
-    }
-
-    private fun showDatePickerDialog() {
-        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-            calendar.set(Calendar.YEAR, year)
-            calendar.set(Calendar.MONTH, month)
-            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            updateSelectedDate(calendar.time)
-        }
-
-        val datePickerDialog = DatePickerDialog(
-            requireContext(),
-            dateSetListener,
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        // Batasi agar tidak bisa memilih tanggal di masa depan
-        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
-        datePickerDialog.show()
-    }
-
-
-    private fun updateSelectedDate(date: Date) {
-        // Format untuk dikirim ke API (contoh: 2023-10-27)
-        val sdfApi = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        selectedDate = sdfApi.format(date)
-
-        // Format untuk ditampilkan di UI (contoh: 27 Oktober 2023)
-        val sdfUi = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
-        binding.edittextTanggal.setText(sdfUi.format(date))
     }
 
     private fun updateCategoryAdapter(checkedId: Int) {
@@ -135,20 +85,16 @@ class AddTransactionFragment : Fragment() {
 
         binding.buttonSimpanTransaksi.isEnabled = false
 
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val dateObject: Date = try {
-            sdf.parse(selectedDate) ?: Date()
-        } catch (e: Exception) {
-            Date()
-        }
-
+        // Payload tidak lagi menyertakan 'date'
         val requestPayload = CreateTransactionRequest(
             type = tipe,
             category = kategori,
             amount = totalDouble,
-            description = catatan,
-            date = dateObject
+            description = catatan
         )
+
+        // Pastikan data class CreateTransactionRequest juga tidak memiliki field 'date'
+        // atau field tersebut nullable.
 
         viewLifecycleOwner.lifecycleScope.launch {
             transactionRepository.postCreateTransaction(requestPayload).collect { response ->

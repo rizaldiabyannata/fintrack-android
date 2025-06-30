@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
     android:fillViewport="true"
+    android:paddingTop="24dp"
     tools:context=".ui.addBudget.AddBudgetFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,13 +40,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
-                android:gravity="center_horizontal"
+                android:gravity="start"
                 android:text="Tambah Anggaran"
                 android:textColor="?attr/colorOnSurface"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/button_kembali_tambah_anggaran"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View

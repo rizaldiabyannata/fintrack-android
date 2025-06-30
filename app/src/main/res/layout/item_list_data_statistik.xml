@@ -31,7 +31,7 @@
             android:id="@+id/tvLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="16dp"
+            android:paddingEnd="14dp"
             android:text="Label"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="18sp" />

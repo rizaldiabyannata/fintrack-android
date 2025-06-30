@@ -31,7 +31,9 @@ class OTPVerificationActivity : AppCompatActivity() {
     private lateinit var userEmail: String
     private lateinit var otpType: OTPType
 
-    enum class OTPType(val value: String) {
+    // --- PERBAIKAN 1: Membuat Enum menjadi Serializable ---
+    // Ini memungkinkan objek enum untuk dikirim melalui Intent dengan aman.
+    enum class OTPType(val value: String) : java.io.Serializable {
         EMAIL_VERIFICATION("verification"),
         RESET_PASSWORD("password")
     }
@@ -47,8 +49,10 @@ class OTPVerificationActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         userEmail = intent.getStringExtra(EXTRA_EMAIL) ?: ""
-        val otpTypeString = intent.getStringExtra(EXTRA_OTP_TYPE) ?: OTPType.EMAIL_VERIFICATION.value
-        otpType = OTPType.values().first { it.value == otpTypeString }
+
+        // --- PERBAIKAN 2: Mengambil data enum dari Intent dengan cara yang benar ---
+        // Menggunakan getSerializableExtra untuk mengambil objek enum secara langsung.
+        otpType = intent.getSerializableExtra(EXTRA_OTP_TYPE) as? OTPType ?: OTPType.EMAIL_VERIFICATION
 
         if (userEmail.isEmpty()) {
             Toast.makeText(this, "Sesi tidak valid.", Toast.LENGTH_SHORT).show()
@@ -91,6 +95,8 @@ class OTPVerificationActivity : AppCompatActivity() {
         }
     }
 
+    // Fungsi submitOTP sudah benar dan tidak perlu diubah,
+    // karena sekarang 'otpType' akan memiliki nilai yang tepat.
     private fun submitOTP(otp: String) {
         lifecycleScope.launch {
             val flow = when (otpType) {
